@@ -1,3 +1,5 @@
+from typing import Optional
+
 from .character import Character
 from .weapon import Weapon
 from .outfit import Outfit
@@ -5,11 +7,17 @@ from .item import Item
 
 
 class Player(Character):
-    def __init__(self, name: str, hp: int, weapon: Weapon, outfit: Outfit, inventory: list):
+    def __init__(
+            self,
+            name: str,
+            hp: int,
+            weapon: Optional[Weapon] = None,
+            outfit: Optional[Outfit] = None
+    ):
         super().__init__(name, hp)
         self.weapon = weapon
         self.outfit = outfit
-        self.inventory = inventory
+        self.inventory = []
 
     def pick_up_item(self, item: Item):
         """
@@ -29,6 +37,8 @@ class Player(Character):
             weapon: The weapon to change to
 
         """
+        self.inventory.remove(weapon)
+        self.inventory.append(self.weapon)
         self.weapon = weapon
 
     def change_outfit(self, outfit: Outfit):
@@ -39,6 +49,8 @@ class Player(Character):
             outfit: The outfit to change to
 
         """
+        self.inventory.remove(outfit)
+        self.inventory.append(self.outfit)
         self.outfit = outfit
 
     def attack(self, target: Character):
