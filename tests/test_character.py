@@ -18,3 +18,9 @@ class CharacterTests(unittest.TestCase):
         character.take_damage(20)
         self.assertEqual(character.hp, 0)
         self.assertEqual(character.is_alive(), False)
+
+    def test_damaged_still_alive(self):
+        character = Character("Girl", 20)
+        character.take_damage(19)
+        self.assertEqual(character.hp, 1)
+        self.assertEqual(character.is_alive(), True)

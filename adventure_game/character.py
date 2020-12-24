@@ -5,7 +5,7 @@ class Character:
 
     def take_damage(self, points: int):
         """
-        Inflict damage on the Character. Returns
+        Inflict damage on the Character.
 
         Args:
             points: The amount of hp damage to deal to the Character.
