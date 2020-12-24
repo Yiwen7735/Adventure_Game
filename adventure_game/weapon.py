@@ -7,8 +7,8 @@ class Weapon(item.Item):
                  weapon_type: enum,
                  attack_strength: int,
                  durability: int):
-        super().__inti__(name, luck_stat)
-        self.weapon_type = type
+        super().__init__(name, luck_stat)
+        self.weapon_type = weapon_type
         self.attack_strength = attack_strength
         self.durability = durability
 
@@ -17,7 +17,8 @@ class Weapon(item.Item):
         Decrement the weapon's durability by 1
 
         """
-        self.durability -= 1
+        if self.durability > 0:
+            self.durability -= 1
 
     def is_broken(self) -> bool:
         """
