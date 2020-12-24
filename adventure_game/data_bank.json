@@ -1,0 +1,21 @@
+{
+  "room_descriptions": [
+    "a dingy cellar with no source of light, except a flickering candle in the corner",
+    "a splendid throne room",
+    "a suspicious tavern"
+  ],
+  "enemies": [
+    {
+      "name": "weary traveller",
+      "hp": 5
+    },
+    {
+      "name": "cowering troll",
+      "hp": 10
+    },
+    {
+      "name": "towering ogre",
+      "hp": 25
+    }
+  ]
+}
