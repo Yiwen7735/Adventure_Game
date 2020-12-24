@@ -19,7 +19,7 @@ class Player(Character):
             item: The item that got picked up
 
         """
-        self.inventory.add(item)
+        self.inventory.append(item)
 
     def change_weapon(self, weapon: Weapon):
         """
