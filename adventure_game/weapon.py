@@ -2,11 +2,21 @@ from . import item
 import enum
 
 
+class WeaponType(enum.Enum):
+    Crappy = enum.auto()
+    Solid = enum.auto()
+    Super = enum.auto()
+
+
 class Weapon(item.Item):
-    def __init__(self, name: str, luck_stat: int,
-                 weapon_type: enum,
-                 attack_strength: int,
-                 durability: int):
+    def __init__(
+            self,
+            name: str,
+            luck_stat: int,
+            weapon_type: WeaponType,
+            attack_strength: int,
+            durability: int
+    ):
         super().__init__(name, luck_stat)
         self.weapon_type = weapon_type
         self.attack_strength = attack_strength
