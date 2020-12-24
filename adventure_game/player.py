@@ -61,6 +61,7 @@ class Player(Character):
             target: The Character to attack
 
         """
+        self.weapon.decrement_durability()
         if target.is_alive():
             target.take_damage(self.weapon.attack_strength)
 
