@@ -8,6 +8,10 @@ class WeaponType(enum.Enum):
     Super = enum.auto()
 
 
+class WeaponBrokenException(Exception):
+    pass
+
+
 class Weapon(item.Item):
     def __init__(
             self,

@@ -1,7 +1,7 @@
 from typing import Optional
 
 from .character import Character
-from .weapon import Weapon
+from .weapon import Weapon, WeaponBrokenException
 from .outfit import Outfit
 from .item import Item
 
@@ -60,7 +60,13 @@ class Player(Character):
         Args:
             target: The Character to attack
 
+        Raises:
+            WeaponBrokenException
+
         """
+        if self.weapon.is_broken():
+            raise WeaponBrokenException()
+
         self.weapon.decrement_durability()
         if target.is_alive():
             target.take_damage(self.weapon.attack_strength)

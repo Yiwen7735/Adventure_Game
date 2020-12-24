@@ -3,7 +3,7 @@ import unittest
 from adventure_game.enemy import Enemy
 from adventure_game.player import Player
 from adventure_game.outfit import Outfit, OutfitType
-from adventure_game.weapon import Weapon, WeaponType
+from adventure_game.weapon import Weapon, WeaponBrokenException, WeaponType
 
 
 class PlayerTests(unittest.TestCase):
@@ -150,7 +150,29 @@ class PlayerTests(unittest.TestCase):
         enemy = Enemy("beast", 10, Weapon("axe", 0, WeaponType.Crappy, 5, 10))
         player.attack(enemy)
         self.assertEqual(enemy.hp, 5)
+        self.assertEqual(player.weapon.durability, 4)
         player.attack(enemy)
         self.assertEqual(enemy.hp, 0)
+        self.assertEqual(player.weapon.durability, 3)
         player.attack(enemy)
         self.assertEqual(enemy.hp, 0)
+        # Weapon durability not decremented when a hit wasn't necessary
+        self.assertEqual(player.weapon.durability, 2)
+
+    def test_attack_enemy_broken_weapon(self):
+        weapon = Weapon("sword", 5, WeaponType.Solid, 5, 1)
+        outfit = Outfit("qipao", 10, OutfitType.Super, 5)
+        player = Player(
+            "Tester",
+            100,
+            weapon,
+            outfit
+        )
+        enemy = Enemy("beast", 10, Weapon("axe", 0, WeaponType.Crappy, 5, 10))
+        player.attack(enemy)
+        self.assertEqual(enemy.hp, 5)
+        self.assertEqual(player.weapon.durability, 0)
+        with self.assertRaises(WeaponBrokenException):
+            player.attack(enemy)
+        self.assertEqual(enemy.hp, 5)
+        self.assertEqual(player.weapon.durability, 0)
