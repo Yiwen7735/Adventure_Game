@@ -62,8 +62,8 @@ class PlayerTests(unittest.TestCase):
         self.assertTrue(starting_weapon in player.inventory)
 
     def test_change_weapon_same_params(self):
-        weapon = Weapon("sword", 1, WeaponType.Crappy, 5, 5);
-        same_weapon = Weapon("sword", 1, WeaponType.Crappy, 5, 5);
+        weapon = Weapon("sword", 1, WeaponType.Crappy, 5, 5)
+        same_weapon = Weapon("sword", 1, WeaponType.Crappy, 5, 5)
         player = Player(
             "Tester",
             100,
@@ -76,7 +76,6 @@ class PlayerTests(unittest.TestCase):
         player.change_weapon(same_weapon)
         self.assertEqual(player.weapon, same_weapon)
         self.assertTrue(weapon in player.inventory)
-
 
     def test_change_outfit(self):
         starting_outfit = Outfit("plain clothes", 0, OutfitType.Crappy, 1)
