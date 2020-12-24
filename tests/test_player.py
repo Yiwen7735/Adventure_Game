@@ -61,6 +61,23 @@ class PlayerTests(unittest.TestCase):
         self.assertEqual(player.weapon, weapon)
         self.assertTrue(starting_weapon in player.inventory)
 
+    def test_change_weapon_same_params(self):
+        weapon = Weapon("sword", 1, WeaponType.Crappy, 5, 5);
+        same_weapon = Weapon("sword", 1, WeaponType.Crappy, 5, 5);
+        player = Player(
+            "Tester",
+            100,
+            weapon,
+            Outfit("pirate costume", 5, OutfitType.Solid, 5)
+        )
+        self.assertEqual(player.weapon, weapon)
+        player.pick_up_item(same_weapon)
+        self.assertTrue(same_weapon in player.inventory)
+        player.change_weapon(same_weapon)
+        self.assertEqual(player.weapon, same_weapon)
+        self.assertTrue(weapon in player.inventory)
+
+
     def test_change_outfit(self):
         starting_outfit = Outfit("plain clothes", 0, OutfitType.Crappy, 1)
         player = Player(
@@ -94,6 +111,22 @@ class PlayerTests(unittest.TestCase):
         player.change_outfit(outfit)
         self.assertEqual(player.outfit, outfit)
         self.assertTrue(starting_outfit in player.inventory)
+
+    def test_change_outfit_same_params(self):
+        outfit = Outfit("armor", 1, OutfitType.Super, 50)
+        same_outfit = Outfit("armor", 1, OutfitType.Super, 50)
+        player = Player(
+            "Tester",
+            100,
+            Weapon("gun", 2, WeaponType.Super, 15, 15),
+            outfit
+        )
+        self.assertEqual(player.outfit, outfit)
+        player.pick_up_item(same_outfit)
+        self.assertTrue(same_outfit in player.inventory)
+        player.change_outfit(same_outfit)
+        self.assertEqual(player.outfit, same_outfit)
+        self.assertTrue(outfit in player.inventory)
 
     def test_luck(self):
         weapon = Weapon("sword", 1, WeaponType.Solid, 5, 5)

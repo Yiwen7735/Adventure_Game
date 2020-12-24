@@ -34,7 +34,7 @@ class Player(Character):
         Change the equipped weapon
 
         Args:
-            weapon: The weapon to change to
+            weapon: The weapon to change to (must be contained in inventory)
 
         """
         self.inventory.remove(weapon)
@@ -46,7 +46,7 @@ class Player(Character):
         Change the equipped outfit
 
         Args:
-            outfit: The outfit to change to
+            outfit: The outfit to change to (must be contained in inventory)
 
         """
         self.inventory.remove(outfit)
