@@ -1,10 +1,10 @@
 from . import item
 
 
-class Weapon(item.Item):
+class Outfit(item.Item):
     def __init__(self):
         pass
 
 
-def generate_weapon() -> Weapon:
+def generate_outfit() -> Outfit:
     pass
