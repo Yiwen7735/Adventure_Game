@@ -12,8 +12,7 @@ class PlayerTests(unittest.TestCase):
             "Tester",
             100,
             Weapon("sword", 0, WeaponType.Crappy, 10, 10),
-            Outfit("slave clothes", 0, OutfitType.Crappy, 10),
-            []
+            Outfit("slave clothes", 0, OutfitType.Crappy, 10)
         )
         self.assertIsInstance(player, Player)
 
@@ -22,8 +21,7 @@ class PlayerTests(unittest.TestCase):
             "Tester",
             100,
             Weapon("sword", 0, WeaponType.Crappy, 10, 10),
-            Outfit("slave clothes", 0, OutfitType.Crappy, 10),
-            []
+            Outfit("slave clothes", 0, OutfitType.Crappy, 10)
         )
         weapon = Weapon("axe", 0, WeaponType.Crappy, 5, 2)
         player.pick_up_item(weapon)
@@ -35,8 +33,7 @@ class PlayerTests(unittest.TestCase):
             "Tester",
             100,
             starting_weapon,
-            Outfit("pirate costume", 5, OutfitType.Solid, 5),
-            []
+            Outfit("pirate costume", 5, OutfitType.Solid, 5)
         )
         self.assertEqual(player.weapon, starting_weapon)
         weapon = Weapon("axe", 0, WeaponType.Solid, 10, 10)
@@ -53,8 +50,7 @@ class PlayerTests(unittest.TestCase):
             "Tester",
             100,
             starting_weapon,
-            Outfit("pirate costume", 5, OutfitType.Solid, 5),
-            []
+            Outfit("pirate costume", 5, OutfitType.Solid, 5)
         )
         self.assertEqual(player.weapon, starting_weapon)
         weapon = Weapon("sword", 0, WeaponType.Solid, 10, 10)
@@ -71,8 +67,7 @@ class PlayerTests(unittest.TestCase):
             "Tester",
             100,
             Weapon("gun", 2, WeaponType.Super, 15, 15),
-            starting_outfit,
-            []
+            starting_outfit
         )
         self.assertEqual(player.outfit, starting_outfit)
         outfit = Outfit("clown costume", 5, OutfitType.Solid, 10)
@@ -89,8 +84,7 @@ class PlayerTests(unittest.TestCase):
             "Tester",
             100,
             Weapon("gun", 2, WeaponType.Super, 15, 15),
-            starting_outfit,
-            []
+            starting_outfit
         )
         self.assertEqual(player.outfit, starting_outfit)
         outfit = Outfit("plain_clothes", 5, OutfitType.Solid, 10)
@@ -108,8 +102,7 @@ class PlayerTests(unittest.TestCase):
             "Tester",
             100,
             weapon,
-            outfit,
-            []
+            outfit
         )
         self.assertEqual(player.get_luck(), weapon.luck_stat + outfit.luck_stat)
 
@@ -120,8 +113,7 @@ class PlayerTests(unittest.TestCase):
             "Tester",
             100,
             weapon,
-            outfit,
-            []
+            outfit
         )
         enemy = Enemy("beast", 10, Weapon("axe", 0, WeaponType.Crappy, 5, 10))
         player.attack(enemy)
