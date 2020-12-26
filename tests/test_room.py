@@ -1,28 +1,46 @@
 import unittest
 
+from adventure_game.compass import Direction, DIRECTIONS
 from adventure_game.room import (
     EmptyRoom,
     MonsterRoom,
+    NoSuchExitException,
+    Room,
     TreasureRoom,
-    generate_empty_room,
-    generate_monster_room,
-    generate_treasure_room,
 )
 
 
-class EmptyRoomTests(unittest.TestCase):
-    def test_generate(self):
-        room = generate_empty_room()
-        self.assertIsInstance(room, EmptyRoom)
+ALL_DIRECTIONS = ["north", "south", "east", "west"]
 
 
-class MonsterRoomTests(unittest.TestCase):
-    def test_generate(self):
-        room = generate_monster_room()
-        self.assertIsInstance(room, MonsterRoom)
+class GenericRoomTests(unittest.TestCase):
+    def test_basic_generate(self):
+        for cls in [EmptyRoom, MonsterRoom, TreasureRoom]:
+            with self.subTest():
+                room = cls.generate([])
+                self.assertIsInstance(room, cls)
+                for d in ALL_DIRECTIONS:
+                    with self.assertRaises(NoSuchExitException):
+                        getattr(room, d)
 
+    def test_generate_one_exit(self):
+        for cls in [EmptyRoom, MonsterRoom, TreasureRoom]:
+            with self.subTest():
+                room = cls.generate([Direction.North])
+                next_room = room.north
+                self.assertIsInstance(next_room, Room)
+                self.assertEqual(next_room, room.north)
+                self.assertEqual(room, next_room.south)
 
-class TreasureRoomTests(unittest.TestCase):
-    def test_generate(self):
-        room = generate_treasure_room()
-        self.assertIsInstance(room, TreasureRoom)
+    def test_generate_all_exits(self):
+        for cls in [EmptyRoom, MonsterRoom, TreasureRoom]:
+            with self.subTest():
+                room = cls.generate(DIRECTIONS)
+                next_room = room.east
+                self.assertIsInstance(next_room, Room)
+                self.assertEqual(next_room, room.east)
+                self.assertEqual(room, next_room.west)
+                self.assertEqual(
+                    len([room.north, room.south, room.east, room.west, self]),
+                    5
+                )
