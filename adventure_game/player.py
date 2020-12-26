@@ -1,9 +1,10 @@
-from typing import Optional
+from typing import List, Optional
 
 from .character import Character
-from .weapon import Weapon, WeaponBrokenException
-from .outfit import Outfit
 from .item import Item
+from .outfit import Outfit
+from .room import Room
+from .weapon import Weapon, WeaponBrokenException
 
 
 class Player(Character):
@@ -17,7 +18,16 @@ class Player(Character):
         super().__init__(name, hp)
         self.weapon = weapon
         self.outfit = outfit
-        self.inventory = []
+        self.inventory: List[Item] = []
+        self.previous_room: Optional[Room] = None
+        self.current_room: Optional[Room] = None
+
+    def move_to(self, room: Room):
+        self.previous_room = self.current_room
+        self.current_room = room
+
+    def retreat(self):
+        self.move_to(self.previous_room)
 
     def pick_up_item(self, item: Item):
         """

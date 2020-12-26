@@ -3,7 +3,6 @@ import random
 
 from . import constants
 from .character import Character
-from .player import Player
 from .weapon import Weapon, generate_weapon
 
 
@@ -16,7 +15,7 @@ class Enemy(Character):
         self.weapon = weapon
         super().__init__(name, hp)
 
-    def attack(self, target: Player):
+    def attack(self, target: Character):
         """
         Attack the target player.
 
