@@ -8,10 +8,10 @@ import json
 import random
 from typing import Dict, List, Optional
 
-from . import compass, constants, enemy, outfit
-from .item import Item
+from . import compass, constants, enemy
+from .chest import Chest
 from .trap import Trap
-from .weapon import Weapon, generate_weapon
+from .weapon import Weapon
 
 
 with open(constants.DATA_BANK_FILE) as fh:
@@ -50,6 +50,9 @@ class Room(abc.ABC):
     @abc.abstractmethod
     def generate(exits: List[compass.Direction]) -> "Room":
         pass
+
+    def get_options(self):
+        return []
 
     def _get_exit_room(self, d: compass.Direction):
         """
@@ -154,17 +157,24 @@ class MonsterRoom(Room):
             enemy.generate_enemy()
         )
 
+    def get_options(self):
+        if self.monster.is_alive():
+            action_handler = {
+                f"Attack {self.monster.name}": lambda player: player.attack(self.monster),
+                "Run back": lambda player: player.retreat()}
+            return action_handler
+        return {}
+
 
 class TreasureRoom(Room):
     def __init__(
             self,
             description: str,
             open_exits: List[compass.Direction],
-            items: List[Item],
             weapon: Optional[Weapon] = None,
             trap: Optional[Trap] = None
     ):
-        self.treasure = items
+        self.chest = Chest()
         super().__init__(description, open_exits, weapon=weapon, trap=trap)
 
     def __str__(self):
@@ -184,19 +194,17 @@ class TreasureRoom(Room):
             """
         return TreasureRoom(
             random.choice(DESCRIPTION_BANK),
-            exits,
-            generate_treasure()
+            exits
         )
 
-    def open_chest(self) -> List[Item]:
-        """
-        Reveals the treasure hidden in the room's chest.
+    def get_options(self):
+        if self.chest.is_open:
+            return {}
 
-        Returns:
-            List of contained Items.
-
-        """
-        return self.treasure
+        action_handler = {
+            "Open the chest": lambda player: self.chest.open(),
+            "Leave it alone": lambda player: None}
+        return action_handler
 
 
 def generate_room(enter_from: Optional[compass.Direction] = None) -> Room:
@@ -219,22 +227,3 @@ def generate_room(enter_from: Optional[compass.Direction] = None) -> Room:
         return MonsterRoom.generate(exits)
     return TreasureRoom.generate(exits)
 
-
-def generate_treasure() -> List[Item]:
-    """
-    Generates a list of items to be served as treasure to the player.
-
-    Returns:
-        List of Items
-
-    """
-    n = random.randint(1, 3)
-    items: List[Item] = []
-    for _ in range(n):
-        if random.randint(0, 1) == 0:
-            # Weapon
-            items.append(generate_weapon())
-        else:
-            # Outfit
-            items.append(outfit.generate_outfit())
-    return items
