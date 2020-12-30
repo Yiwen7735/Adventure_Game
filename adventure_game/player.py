@@ -80,6 +80,20 @@ class Player(Character):
         """
         self.inventory.append(item)
 
+    def equip(self, option: int):
+        """
+        Equip the player with the new item they chose
+
+        Args:
+            option: the option_th item in the inventory list
+
+        """
+        item = self.inventory[option - 1]
+        if isinstance(item, Weapon):
+            self.change_weapon(item)
+        elif isinstance(item, Outfit):
+            self.change_outfit(item)
+
     def change_weapon(self, weapon: Weapon):
         """
         Change the equipped weapon
