@@ -18,17 +18,35 @@ def attack(player: Player, enemy: Enemy):
         enemy: the enemy encountered in a certain room
 
     """
-    while player.is_alive() and enemy.is_alive():
+    while player.is_alive():
         try:
             player.attack(enemy)
         except WeaponBrokenException:
             print("Your weapon is broken. Better run before he gets you")
+        else:
+            weapon_name = (
+                player.weapon.name
+                if player.weapon is not None
+                else 'fists'
+            )
+            print(f"You attacked {enemy.name} with your {weapon_name}")
+
+        if not enemy.is_alive():
+            print(f"You took down the {enemy.name}!")
+            break
 
         enemy.attack(player)
 
-        print(f"hp stats: {player.name} {player.hp}, {enemy.name} {enemy.hp}")
-        run = input("RUN AWAY?? 1.Hell yeah  2.Nope, gonna fight till I die")
-        if run == '1':
+        print(
+            f"hp stats: {player.name} {player.hp}, {enemy.name} {enemy.hp}"
+        )
+        run = None
+        while run is None:
+            run = get_user_input(
+                "RUN AWAY?? 1.Hell yeah  2.Nope, gonna fight till I die",
+                player
+            )
+        if run == 1:
             player.retreat()
             break
 
@@ -62,11 +80,12 @@ def collect(player: Player, chest: Chest):
 
         if option > len(chest.contents):
             for treasure in chest.contents:
+                print(f"You picked up {treasure.name}!")
                 player.pick_up_item(treasure)
             chest.contents.clear()
-
         else:
             treasure = chest.contents[option - 1]
+            print(f"You picked up {treasure.name}!")
             player.pick_up_item(treasure)
             chest.contents.remove(treasure)
 
