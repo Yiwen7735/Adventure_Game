@@ -15,7 +15,7 @@ if TYPE_CHECKING:
     from .player import Player
 from .trap import Trap
 from .weapon import Weapon
-
+from . import action
 
 # Populate a set of descriptions from the predefined JSON
 # These descriptions are used when dynamically generating new rooms
@@ -265,7 +265,7 @@ class MonsterRoom(Room):
         if self.monster.is_alive():
             action_handler = {
                 f"Attack {self.monster.name}":
-                    lambda player: player.attack(self.monster),
+                    lambda player: action.attack(player, self.monster),
                 "Run back": lambda player: player.retreat()
             }
             return action_handler
@@ -323,7 +323,7 @@ class TreasureRoom(Room):
             return {}
 
         action_handler = {
-            "Open the chest": lambda player: self.chest.open(),
+            "Open the chest": lambda player: action.collect(player, self.chest),
             "Leave it alone": lambda player: None
         }
         return action_handler
