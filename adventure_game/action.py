@@ -27,7 +27,7 @@ def attack(player: Player, enemy: Enemy):
 
         print(f"hp stats: {player.name} {player.hp}, {enemy.name} {enemy.hp}")
         run = input("RUN AWAY?? 1.Hell yeah  2.Nope, gonna fight till I die")
-        if run == 1:
+        if run == '1':
             player.retreat()
             break
 
@@ -51,25 +51,25 @@ def collect(player: Player, chest: Chest):
           "Which one would you like to take?")
 
     while len(chest.contents) > 0:
-        items_left = len(chest.contents)
         for i, treasure in enumerate(chest.contents):
             print(f"{i + 1}.{treasure.name}")
 
-        if items_left > 1:
-            print(f"{items_left + 1}.All of the above")
+        if len(chest.contents)> 1:
+            print(f"{len(chest.contents) + 1}.All of the above")
 
-        option = input()
+        option = int(input())
 
-        if option > items_left:
+        if option > len(chest.contents):
             for treasure in chest.contents:
                 player.pick_up_item(treasure)
-                chest.contents.remove(treasure)
+            chest.contents.clear()
+
         else:
             treasure = chest.contents[option - 1]
             player.pick_up_item(treasure)
             chest.contents.remove(treasure)
 
-        if items_left > 0:
+        if len(chest.contents) > 0:
             take_again = input("Continue to take? 1.Yes  2.No")
             if take_again == 2:
                 break
