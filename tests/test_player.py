@@ -1,8 +1,10 @@
 import unittest
 
+from adventure_game.compass import Direction
 from adventure_game.enemy import Enemy
-from adventure_game.player import Player
 from adventure_game.outfit import Outfit, OutfitType
+from adventure_game.player import Player
+from adventure_game.room import generate_first_room
 from adventure_game.weapon import Weapon, WeaponBrokenException, WeaponType
 
 
@@ -176,3 +178,38 @@ class PlayerTests(unittest.TestCase):
             player.attack(enemy)
         self.assertEqual(enemy.hp, 5)
         self.assertEqual(player.weapon.durability, 0)
+
+
+class PlayerMovementTests(unittest.TestCase):
+    def test_initial_placement(self):
+        room = generate_first_room()
+        player = Player("Tester", 100, None, None)
+        player.move_to(room)
+        self.assertEqual(player.current_room, room)
+
+    def test_initial_placement_retreat(self):
+        room = generate_first_room()
+        player = Player("Tester", 100, None, None)
+        player.move_to(room)
+        self.assertEqual(player.current_room, room)
+        player.retreat()
+        self.assertEqual(player.current_room, None)
+
+    def test_go_valid_directions(self):
+        room = generate_first_room()
+        player = Player("Tester", 100, None, None)
+        player.move_to(room)
+        for d in room.get_exits():
+            d = Direction[d]
+            if d is Direction.North:
+                new_room = player.current_room.north
+            elif d is Direction.South:
+                new_room = player.current_room.south
+            elif d is Direction.East:
+                new_room = player.current_room.east
+            else:
+                new_room = player.current_room.west
+            player.go(d)
+            self.assertEqual(player.current_room, new_room)
+            player.retreat()
+            self.assertEqual(player.current_room, room)
