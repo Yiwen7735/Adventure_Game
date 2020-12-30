@@ -115,12 +115,16 @@ class Player(Character):
             WeaponBrokenException
 
         """
-        if self.weapon.is_broken():
-            raise WeaponBrokenException()
+        if self.weapon is None:
+            damage = 1
+        else:
+            if self.weapon.is_broken():
+                raise WeaponBrokenException()
+            damage = self.weapon.attack_strength
+            self.weapon.decrement_durability()
 
-        self.weapon.decrement_durability()
         if target.is_alive():
-            target.take_damage(self.weapon.attack_strength)
+            target.take_damage(damage)
 
     def get_luck(self) -> int:
         """

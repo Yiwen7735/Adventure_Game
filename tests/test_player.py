@@ -179,6 +179,12 @@ class PlayerTests(unittest.TestCase):
         self.assertEqual(enemy.hp, 5)
         self.assertEqual(player.weapon.durability, 0)
 
+    def test_attack_unarmed(self):
+        player = Player("Tester", 100, None, None)
+        enemy = Enemy("beast", 10, Weapon("axe", 0, WeaponType.Crappy, 5, 10))
+        player.attack(enemy)
+        self.assertEqual(enemy.hp, 9)
+
 
 class PlayerMovementTests(unittest.TestCase):
     def test_initial_placement(self):
