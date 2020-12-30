@@ -103,7 +103,8 @@ class Player(Character):
 
         """
         self.inventory.remove(weapon)
-        self.inventory.append(self.weapon)
+        if self.weapon is not None:
+            self.inventory.append(self.weapon)
         self.weapon = weapon
 
     def change_outfit(self, outfit: Outfit):
@@ -115,7 +116,8 @@ class Player(Character):
 
         """
         self.inventory.remove(outfit)
-        self.inventory.append(self.outfit)
+        if self.outfit is not None:
+            self.inventory.append(self.outfit)
         self.outfit = outfit
 
     def attack(self, target: Character):
