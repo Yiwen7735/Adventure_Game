@@ -30,5 +30,11 @@ class Chest:
                 self.contents.append(generate_outfit())
         return self.contents
 
+    def remove(self, item: Item):
+        """
+        Remove an item from the list
+        Returns:
 
-
+        """
+        if item in self.contents:
+            self.contents.remove(item)
