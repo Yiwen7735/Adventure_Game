@@ -9,7 +9,7 @@ import json
 import random
 from typing import Callable, Dict, List, Optional, TYPE_CHECKING
 
-from . import compass, constants, enemy
+from . import compass, constants, enemy, messages
 from .chest import Chest
 if TYPE_CHECKING:
     from .player import Player
@@ -227,7 +227,10 @@ class MonsterRoom(Room):
         super().__init__(description, exits, weapon=weapon, trap=trap)
 
     def __str__(self):
-        return f'{self.description}, with a {self.monster.name}'
+        return (
+            f'{self.description}, with '
+            f'{messages.get_a_or_an(self.monster.name)} {self.monster.name}'
+        )
 
     @staticmethod
     def generate(exits: List[compass.Direction]) -> Room:
