@@ -14,6 +14,10 @@ def print_options(options: Iterable[str]):
         print(f"{i + 1}. {option}")
 
 
+def game_over():
+    pass
+
+
 def run_game():
     name = input("Please enter your name: ")
     player = Player(name, 100)
