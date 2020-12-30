@@ -7,10 +7,17 @@ from adventure_game.room import (
     NoSuchExitException,
     Room,
     TreasureRoom,
+    generate_first_room,
 )
 
 
 ALL_DIRECTIONS = ["north", "south", "east", "west"]
+
+
+class GenerateFirstRoomTests(unittest.TestCase):
+    def test_is_empty_room(self):
+        room = generate_first_room()
+        self.assertIsInstance(room, EmptyRoom)
 
 
 class GenericRoomTests(unittest.TestCase):
