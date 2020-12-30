@@ -3,8 +3,9 @@ from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from .player import Player
-from .enemy import Enemy
 from .chest import Chest
+from .enemy import Enemy
+from .utils import print_options, get_user_input
 from .weapon import WeaponBrokenException
 
 
@@ -51,13 +52,13 @@ def collect(player: Player, chest: Chest):
           "Which one would you like to take?")
 
     while len(chest.contents) > 0:
-        for i, treasure in enumerate(chest.contents):
-            print(f"{i + 1}.{treasure.name}")
+        print_options([t.name for t in chest.contents])
+        if len(chest.contents) > 1:
+            print(f"{len(chest.contents) + 1}. All of the above")
 
-        if len(chest.contents)> 1:
-            print(f"{len(chest.contents) + 1}.All of the above")
-
-        option = int(input())
+        option = get_user_input("", player)
+        if option is None:
+            continue
 
         if option > len(chest.contents):
             for treasure in chest.contents:
@@ -70,7 +71,8 @@ def collect(player: Player, chest: Chest):
             chest.contents.remove(treasure)
 
         if len(chest.contents) > 0:
-            take_again = input("Continue to take? 1.Yes  2.No")
+            take_again = None
+            while take_again is None:
+                take_again = get_user_input("Continue to take?\n1. Yes \n2. No", player)
             if take_again == 2:
                 break
-
