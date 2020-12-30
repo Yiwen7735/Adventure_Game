@@ -89,6 +89,19 @@
         "Solid": 0,
         "Super": 0
       }
+    },
+    {
+      "name": "lan qipao",
+      "luck": {
+        "Crappy": 2,
+        "Solid": 4,
+        "Super": 5
+      },
+      "defence": {
+        "Crappy": 0,
+        "Solid": 0,
+        "Super": 0
+      }
     }
   ]
 }
