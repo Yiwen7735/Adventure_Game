@@ -1,5 +1,5 @@
 from __future__ import annotations
-from typing import Iterable, TYPE_CHECKING
+from typing import Iterable, Optional, TYPE_CHECKING
 
 if TYPE_CHECKING:
     from .player import Player
@@ -36,10 +36,31 @@ def show_inventory(player: Player):
 def equip(player: Player):
     option = get_user_input("Which item do you want to equip?", player)
     if option is not None:
+        item = player.inventory[option - 1]
         player.equip(option)
+        print(f"You equipped the {item.name}")
 
 
-def get_user_input(prompt: str, player: Player):
+def get_user_input(prompt: str, player: Player) -> Optional[int]:
+    """
+    Prompts the user for input, and handles generic actions.
+
+    The following inputs are handled specially:
+      - i: Print the player's inventory
+      - e: Equip an item (weapon/outfit)
+    If the input is not one of these characters, it is cast to an integer
+    and returned for the caller to handle.
+
+    Args:
+        prompt: The message with which to prompt the user for input.
+        player: The Player instance associated with the current user.
+
+    Returns:
+        None, if the input is handled here, int otherwise.
+
+    """
+    if not prompt.endswith(" "):
+        prompt += " "
     option = input(prompt)
     if option == 'i':
         show_inventory(player)
@@ -49,5 +70,9 @@ def get_user_input(prompt: str, player: Player):
         equip(player)
         return None
 
-    return int(option)
-
+    while True:
+        try:
+            return int(option)
+        except ValueError:
+            print("You must enter an integer!")
+            option = input(prompt)
