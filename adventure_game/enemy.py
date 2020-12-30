@@ -1,8 +1,12 @@
+from __future__ import annotations
 import json
 import random
+from typing import TYPE_CHECKING
 
 from . import constants
 from .character import Character
+if TYPE_CHECKING:
+    from .player import Player
 from .weapon import Weapon, generate_weapon
 
 
@@ -15,7 +19,7 @@ class Enemy(Character):
         self.weapon = weapon
         super().__init__(name, hp)
 
-    def attack(self, target: Character):
+    def attack(self, target: Player):
         """
         Attack the target player.
 
