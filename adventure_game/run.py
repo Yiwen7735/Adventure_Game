@@ -1,17 +1,7 @@
-from typing import Iterable
-
 from .compass import Direction
 from .player import Player
 from .room import generate_first_room
-
-
-def print_options(options: Iterable[str]):
-    """
-    Prints the options, numbered 1 to len(options).
-
-    """
-    for i, option in enumerate(options):
-        print(f"{i + 1}. {option}")
+from .utils import print_options
 
 
 def game_over():
@@ -33,10 +23,6 @@ def run_game():
             action_id = input("Which action would you like to do?")
             key = list(options.keys())[int(action_id) - 1]
             # Invoke the action handler for the selected option
-            # TODO: some of the actions require further thought, e.g.:
-            #    - fight loop for attacking enemies
-            #    - printing treasure chest contents and allowing the player to
-            #      pick up the items (removing them from the chest)
             options[key](player)
 
         print("Where would you like to go?")
