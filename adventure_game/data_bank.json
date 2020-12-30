@@ -3,7 +3,9 @@
     "a dingy cellar with no source of light, except a flickering candle in the corner",
     "a splendid throne room",
     "a suspicious tavern",
-    "a bright room with a huge walking closet"
+    "a bright room with a huge walk-in closet",
+    "a splendid beach with a view of the setting sun",
+    "an engine room filled with steam"
   ],
   "enemies": [
     {
@@ -17,6 +19,76 @@
     {
       "name": "towering ogre",
       "hp": 25
+    },
+    {
+      "name": "interrupted engineer",
+      "hp": 15
+    }
+  ],
+  "weapon_types": [
+    {
+      "name": "sword",
+      "damage": {
+        "Crappy": 3,
+        "Solid": 5,
+        "Super": 10
+      },
+      "luck": {
+        "Crappy": 0,
+        "Solid": 1,
+        "Super": 3
+      },
+      "durability": {
+        "Crappy": 5,
+        "Solid": 10,
+        "Super": 20
+      }
+    },
+    {
+      "name": "gun",
+      "damage": {
+        "Crappy": 5,
+        "Solid": 10,
+        "Super": 15
+      },
+      "luck": {
+        "Crappy": 0,
+        "Solid": 1,
+        "Super": 3
+      },
+      "durability": {
+        "Crappy": 10,
+        "Solid": 20,
+        "Super": 30
+      }
+    }
+  ],
+  "outfit_types": [
+    {
+      "name": "pirate costume",
+      "luck": {
+        "Crappy": 0,
+        "Solid": 1,
+        "Super": 3
+      },
+      "defence": {
+        "Crappy": 0,
+        "Solid": 0,
+        "Super": 0
+      }
+    },
+    {
+      "name": "beautiful dress",
+      "luck": {
+        "Crappy": 1,
+        "Solid": 2,
+        "Super": 4
+      },
+      "defence": {
+        "Crappy": 0,
+        "Solid": 0,
+        "Super": 0
+      }
     }
   ]
 }
