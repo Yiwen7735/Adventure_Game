@@ -38,3 +38,11 @@ class Chest:
         """
         if item in self.contents:
             self.contents.remove(item)
+
+    def clear(self):
+        """
+        Clear the chest (removing all items at once)
+
+        """
+        for item in self.contents:
+            self.contents.remove(item)
