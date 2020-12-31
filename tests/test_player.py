@@ -27,8 +27,11 @@ class PlayerTests(unittest.TestCase):
             Outfit("slave clothes", 0, Rarity.Crappy, 10)
         )
         weapon = Weapon("axe", 0, Rarity.Crappy, 5, 2)
+        outfit = Outfit("qipao", 10, Rarity.Super, 10)
         player.pick_up_item(weapon)
-        self.assertTrue(weapon in player.inventory)
+        player.pick_up_item(outfit)
+        self.assertTrue(weapon in player.inventory["weapon"])
+        self.assertTrue(outfit in player.inventory["outfit"])
 
     def test_change_weapon(self):
         starting_weapon = Weapon("sword", 1, Rarity.Crappy, 5, 5)
@@ -38,14 +41,14 @@ class PlayerTests(unittest.TestCase):
             starting_weapon,
             Outfit("pirate costume", 5, Rarity.Common, 5)
         )
-        self.assertEqual(player.weapon, starting_weapon)
+        self.assertEqual(player.equipped["weapon"], starting_weapon)
         weapon = Weapon("axe", 0, Rarity.Common, 10, 10)
         player.pick_up_item(weapon)
-        self.assertEqual(player.weapon, starting_weapon)
-        self.assertTrue(weapon in player.inventory)
-        player.change_weapon(weapon)
-        self.assertEqual(player.weapon, weapon)
-        self.assertTrue(starting_weapon in player.inventory)
+        self.assertEqual(player.equipped["weapon"], starting_weapon)
+        self.assertTrue(weapon in player.inventory["weapon"])
+        player.change_item("weapon", weapon)
+        self.assertEqual(player.equipped["weapon"], weapon)
+        self.assertTrue(starting_weapon in player.inventory["weapon"])
 
     def test_change_weapon_same_name(self):
         starting_weapon = Weapon("sword", 1, Rarity.Crappy, 5, 5)
@@ -55,14 +58,14 @@ class PlayerTests(unittest.TestCase):
             starting_weapon,
             Outfit("pirate costume", 5, Rarity.Common, 5)
         )
-        self.assertEqual(player.weapon, starting_weapon)
+        self.assertEqual(player.equipped["weapon"], starting_weapon)
         weapon = Weapon("sword", 0, Rarity.Common, 10, 10)
         player.pick_up_item(weapon)
-        self.assertEqual(player.weapon, starting_weapon)
-        self.assertTrue(weapon in player.inventory)
-        player.change_weapon(weapon)
-        self.assertEqual(player.weapon, weapon)
-        self.assertTrue(starting_weapon in player.inventory)
+        self.assertEqual(player.equipped["weapon"], starting_weapon)
+        self.assertTrue(weapon in player.inventory["weapon"])
+        player.change_item("weapon", weapon)
+        self.assertEqual(player.equipped["weapon"], weapon)
+        self.assertTrue(starting_weapon in player.inventory["weapon"])
 
     def test_change_weapon_same_params(self):
         weapon = Weapon("sword", 1, Rarity.Crappy, 5, 5)
@@ -73,12 +76,12 @@ class PlayerTests(unittest.TestCase):
             weapon,
             Outfit("pirate costume", 5, Rarity.Common, 5)
         )
-        self.assertEqual(player.weapon, weapon)
+        self.assertEqual(player.equipped["weapon"], weapon)
         player.pick_up_item(same_weapon)
-        self.assertTrue(same_weapon in player.inventory)
-        player.change_weapon(same_weapon)
-        self.assertEqual(player.weapon, same_weapon)
-        self.assertTrue(weapon in player.inventory)
+        self.assertTrue(same_weapon in player.inventory["weapon"])
+        player.change_item("weapon", same_weapon)
+        self.assertEqual(player.equipped["weapon"], same_weapon)
+        self.assertTrue(weapon in player.inventory["weapon"])
 
     def test_change_outfit(self):
         starting_outfit = Outfit("plain clothes", 0, Rarity.Crappy, 1)
@@ -88,14 +91,14 @@ class PlayerTests(unittest.TestCase):
             Weapon("gun", 2, Rarity.Super, 15, 15),
             starting_outfit
         )
-        self.assertEqual(player.outfit, starting_outfit)
+        self.assertEqual(player.equipped["outfit"], starting_outfit)
         outfit = Outfit("clown costume", 5, Rarity.Common, 10)
         player.pick_up_item(outfit)
-        self.assertEqual(player.outfit, starting_outfit)
-        self.assertTrue(outfit in player.inventory)
-        player.change_outfit(outfit)
-        self.assertEqual(player.outfit, outfit)
-        self.assertTrue(starting_outfit in player.inventory)
+        self.assertEqual(player.equipped["outfit"], starting_outfit)
+        self.assertTrue(outfit in player.inventory["outfit"])
+        player.change_item("outfit", outfit)
+        self.assertEqual(player.equipped["outfit"], outfit)
+        self.assertTrue(starting_outfit in player.inventory["outfit"])
 
     def test_change_outfit_same_name(self):
         starting_outfit = Outfit("plain clothes", 0, Rarity.Crappy, 1)
@@ -105,14 +108,14 @@ class PlayerTests(unittest.TestCase):
             Weapon("gun", 2, Rarity.Super, 15, 15),
             starting_outfit
         )
-        self.assertEqual(player.outfit, starting_outfit)
+        self.assertEqual(player.equipped["outfit"], starting_outfit)
         outfit = Outfit("plain_clothes", 5, Rarity.Common, 10)
         player.pick_up_item(outfit)
-        self.assertEqual(player.outfit, starting_outfit)
-        self.assertTrue(outfit in player.inventory)
-        player.change_outfit(outfit)
-        self.assertEqual(player.outfit, outfit)
-        self.assertTrue(starting_outfit in player.inventory)
+        self.assertEqual(player.equipped["outfit"], starting_outfit)
+        self.assertTrue(outfit in player.inventory["outfit"])
+        player.change_item("outfit", outfit)
+        self.assertEqual(player.equipped["outfit"], outfit)
+        self.assertTrue(starting_outfit in player.inventory["outfit"])
 
     def test_change_outfit_same_params(self):
         outfit = Outfit("armor", 1, Rarity.Super, 50)
@@ -123,12 +126,12 @@ class PlayerTests(unittest.TestCase):
             Weapon("gun", 2, Rarity.Super, 15, 15),
             outfit
         )
-        self.assertEqual(player.outfit, outfit)
+        self.assertEqual(player.equipped["outfit"], outfit)
         player.pick_up_item(same_outfit)
-        self.assertTrue(same_outfit in player.inventory)
-        player.change_outfit(same_outfit)
-        self.assertEqual(player.outfit, same_outfit)
-        self.assertTrue(outfit in player.inventory)
+        self.assertTrue(same_outfit in player.inventory["outfit"])
+        player.change_item("outfit", same_outfit)
+        self.assertEqual(player.equipped["outfit"], same_outfit)
+        self.assertTrue(outfit in player.inventory["outfit"])
 
     def test_luck(self):
         weapon = Weapon("sword", 1, Rarity.Common, 5, 5)
@@ -153,14 +156,14 @@ class PlayerTests(unittest.TestCase):
         enemy = Enemy("beast", 10, Weapon("axe", 0, Rarity.Crappy, 5, 10))
         player.attack(enemy)
         self.assertEqual(enemy.hp, 5)
-        self.assertEqual(player.weapon.durability, 4)
+        self.assertEqual(player.equipped["weapon"].durability, 4)
         player.attack(enemy)
         self.assertEqual(enemy.hp, 0)
-        self.assertEqual(player.weapon.durability, 3)
+        self.assertEqual(player.equipped["weapon"].durability, 3)
         player.attack(enemy)
         self.assertEqual(enemy.hp, 0)
         # Weapon durability not decremented when a hit wasn't necessary
-        self.assertEqual(player.weapon.durability, 2)
+        self.assertEqual(player.equipped["weapon"].durability, 2)
 
     def test_attack_enemy_broken_weapon(self):
         weapon = Weapon("sword", 5, Rarity.Common, 5, 1)
@@ -174,11 +177,11 @@ class PlayerTests(unittest.TestCase):
         enemy = Enemy("beast", 10, Weapon("axe", 0, Rarity.Crappy, 5, 10))
         player.attack(enemy)
         self.assertEqual(enemy.hp, 5)
-        self.assertEqual(player.weapon.durability, 0)
+        self.assertEqual(player.equipped["weapon"].durability, 0)
         with self.assertRaises(WeaponBrokenException):
             player.attack(enemy)
         self.assertEqual(enemy.hp, 5)
-        self.assertEqual(player.weapon.durability, 0)
+        self.assertEqual(player.equipped["weapon"].durability, 0)
 
     def test_attack_unarmed(self):
         player = Player("Tester", 100, None, None)
