@@ -11,44 +11,58 @@ from .weapon import WeaponBrokenException
 
 def attack(player: Player, enemy: Enemy):
     """
-    Enter a loop of attack between player and enemy
+    Enter a loop of attack between player and enemy, consisting of
+        - 1. if the player is killed, game over
+        - 2. remind the player if their hp falls below 10
+        - 3. remind the player if their weapon is broken
+        - 4. if enemy isn't killed, attacks back
+        - 5. display hp status at the end of each mutual attack
 
     Args:
         player: the player in the game
         enemy: the enemy encountered in a certain room
 
     """
-    while player.is_alive():
-        try:
-            player.attack(enemy)
-        except WeaponBrokenException:
-            print("Your weapon is broken. Better run before he gets you")
-        else:
-            weapon_name = (
-                player.weapon.name
-                if player.weapon is not None
-                else 'fists'
-            )
-            print(f"You attacked {enemy.name} with your {weapon_name}")
-
-        if not enemy.is_alive():
-            print(f"You took down the {enemy.name}!")
+    option = "a"
+    while option != "f":
+        if not player.is_alive():
             break
+        if player.hp < 10:
+            run = None
+            while run is None:
+                run = get_user_input(
+                    "RUN AWAY?? 1.Hell yeah  "
+                    "2.Nope, gonna fight till I die",
+                    player
+                )
+            if run == 1:
+                player.retreat()
+                break
 
-        enemy.attack(player)
+        if option == "a":
+            try:
+                player.attack(enemy)
+            except WeaponBrokenException:
+                print(f"Your weapon is broken. Better run before {enemy.name} gets you")
+            else:
+                weapon_name = (
+                    player.equipped["weapon"].name
+                    if player.equipped["weapon"] is not None
+                    else 'fists'
+                )
+                print(f"You attacked {enemy.name} with your {weapon_name}")
 
-        print(
-            f"hp stats: {player.name} {player.hp}, {enemy.name} {enemy.hp}"
-        )
-        run = None
-        while run is None:
-            run = get_user_input(
-                "RUN AWAY?? 1.Hell yeah  2.Nope, gonna fight till I die",
-                player
+            if not enemy.is_alive():
+                print(f"You took down the {enemy.name}!")
+                break
+
+            enemy.attack(player)
+
+            print(
+                f"hp stats: {player.name} {player.hp}, {enemy.name} {enemy.hp}"
             )
-        if run == 1:
-            player.retreat()
-            break
+
+        option = get_user_input("Press 'a' to continue attacking or 'f' to flee", player)
 
 
 def collect(player: Player, chest: Chest):
@@ -71,18 +85,17 @@ def collect(player: Player, chest: Chest):
 
     while len(chest.contents) > 0:
         print_options([t.name for t in chest.contents])
-        if len(chest.contents) > 1:
-            print(f"{len(chest.contents) + 1}. All of the above")
-
-        option = get_user_input("", player)
+        option = get_user_input("Press 'a' to take all or 'n' to take none", player)
         if option is None:
             continue
 
-        if option > len(chest.contents):
+        if option == 'a':
             for treasure in chest.contents:
                 print(f"You picked up {treasure.name}!")
                 player.pick_up_item(treasure)
             chest.contents.clear()
+        elif option == 'n':
+            break
         else:
             treasure = chest.contents[option - 1]
             print(f"You picked up {treasure.name}!")

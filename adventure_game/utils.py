@@ -24,24 +24,28 @@ def show_inventory(player: Player):
     Returns:
 
     """
-    if not len(player.inventory):
-        print("You have NOTHING for the moment")
-
-    else:
-        print("Your inventory: ")
-        print_options([t.name for t in player.inventory])
-        print()
+    for item_key, item_list in player.inventory.items():
+        print(f"Your {item_key}s: ")
+        if not len(item_list):
+            print(f"You have NO {item_key}s")
+        else:
+            print_options([item.name for item in item_list])
 
 
 def equip(player: Player):
-    option = get_user_input("Which item do you want to equip?", player)
+    option = get_user_input("Which item do you want to equip? "
+                            "[e.g., w1: weapon #1, o2: outfit #2]",
+                            player)
     if option is not None:
-        item = player.inventory[option - 1]
-        player.equip(option)
+        option_dict = {"w": "weapon", "o": "outfit"}  # should expand it for all options?
+        item_type = option_dict[option[0]]
+        item_num = int(option[1])
+        item = player.inventory[item_type][item_num - 1]
+        player.equip(item_type, item_num)
         print(f"You equipped the {item.name}")
 
 
-def get_user_input(prompt: str, player: Player) -> Optional[int]:
+def get_user_input(prompt: str, player: Player) -> Optional[str]:
     """
     Prompts the user for input, and handles generic actions.
 
@@ -70,9 +74,7 @@ def get_user_input(prompt: str, player: Player) -> Optional[int]:
         equip(player)
         return None
 
-    while True:
-        try:
-            return int(option)
-        except ValueError:
-            print("You must enter an integer!")
-            option = input(prompt)
+    try:
+        return int(option)
+    except ValueError:
+        return option
