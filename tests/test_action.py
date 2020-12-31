@@ -1,11 +1,11 @@
 import unittest
 
 from adventure_game import action
-from adventure_game.player import Player
 from adventure_game.enemy import Enemy
-from adventure_game.weapon import Weapon, WeaponType
-from adventure_game.outfit import Outfit, OutfitType
-from adventure_game.item import Item
+from adventure_game.item import Item, Rarity
+from adventure_game.outfit import Outfit
+from adventure_game.player import Player
+from adventure_game.weapon import Weapon
 
 
 class AttackTests(unittest.TestCase):
@@ -15,15 +15,15 @@ class AttackTests(unittest.TestCase):
         player = Player(
             "WeakDan",
             50,
-            Weapon("sword", 0, WeaponType.Crappy, 10, 10),
-            Outfit("slave clothes", 0, OutfitType.Crappy, 10)
+            Weapon("sword", 0, Rarity.Crappy, 10, 10),
+            Outfit("slave clothes", 0, Rarity.Crappy, 10)
         )
 
         monster = Enemy(
             "StrongZhu",
             100,
-            Weapon("gun", 100, WeaponType.Super, 20, 20),
-            Outfit("lan qipao", 0, OutfitType.Super, 50)
+            Weapon("gun", 100, Rarity.Super, 20, 20),
+            Outfit("lan qipao", 0, Rarity.Super, 50)
         )
         self.assertEqual(True, False)
     """

@@ -1,17 +1,7 @@
-import enum
 import json
 import random
 
 from . import constants, item
-
-
-class WeaponType(enum.Enum):
-    Crappy = enum.auto()
-    Solid = enum.auto()
-    Super = enum.auto()
-
-
-WEAPON_TYPES = [t for t in WeaponType]
 
 
 class WeaponBrokenException(Exception):
@@ -23,12 +13,12 @@ class Weapon(item.Item):
             self,
             name: str,
             luck_stat: int,
-            weapon_type: WeaponType,
+            rarity: item.Rarity,
             attack_strength: int,
             durability: int
     ):
         super().__init__(name, luck_stat)
-        self.weapon_type = weapon_type
+        self.rarity = rarity
         self.attack_strength = attack_strength
         self.durability = durability
 
@@ -57,12 +47,12 @@ with open(constants.DATA_BANK_FILE) as fh:
 
 def generate_weapon() -> Weapon:
     base = random.choice(WEAPON_TYPE_BANK)
-    level = random.choices(WEAPON_TYPES, weights=[10, 5, 1])[0]
-    level_str = level.name
+    rarity = random.choices(item.RARITIES, weights=[10, 5, 1])[0]
+    rarity_str = rarity.name
     return Weapon(
-        f"{level.name} {base['name']}",
-        base["luck"][level_str],
-        level,
-        base["damage"][level_str],
-        base["durability"][level_str]
+        f"{rarity_str} {base['name']}",
+        base["luck"][rarity_str],
+        rarity,
+        base["damage"][rarity_str],
+        base["durability"][rarity_str]
     )

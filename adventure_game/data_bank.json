@@ -30,17 +30,17 @@
       "name": "sword",
       "damage": {
         "Crappy": 3,
-        "Solid": 5,
+        "Common": 5,
         "Super": 10
       },
       "luck": {
         "Crappy": 0,
-        "Solid": 1,
+        "Common": 1,
         "Super": 3
       },
       "durability": {
         "Crappy": 5,
-        "Solid": 10,
+        "Common": 10,
         "Super": 20
       }
     },
@@ -48,17 +48,17 @@
       "name": "gun",
       "damage": {
         "Crappy": 5,
-        "Solid": 10,
+        "Common": 10,
         "Super": 15
       },
       "luck": {
         "Crappy": 0,
-        "Solid": 1,
+        "Common": 1,
         "Super": 3
       },
       "durability": {
         "Crappy": 10,
-        "Solid": 20,
+        "Common": 20,
         "Super": 30
       }
     }
@@ -68,12 +68,12 @@
       "name": "pirate costume",
       "luck": {
         "Crappy": 0,
-        "Solid": 1,
+        "Common": 1,
         "Super": 3
       },
       "defence": {
         "Crappy": 0,
-        "Solid": 0,
+        "Common": 0,
         "Super": 0
       }
     },
@@ -81,12 +81,12 @@
       "name": "beautiful dress",
       "luck": {
         "Crappy": 1,
-        "Solid": 2,
+        "Common": 2,
         "Super": 4
       },
       "defence": {
         "Crappy": 0,
-        "Solid": 0,
+        "Common": 0,
         "Super": 0
       }
     },
@@ -94,12 +94,12 @@
       "name": "lan qipao",
       "luck": {
         "Crappy": 2,
-        "Solid": 4,
+        "Common": 4,
         "Super": 5
       },
       "defence": {
         "Crappy": 0,
-        "Solid": 0,
+        "Common": 0,
         "Super": 0
       }
     }

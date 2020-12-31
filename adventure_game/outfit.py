@@ -1,17 +1,7 @@
-import enum
 import json
 import random
 
 from . import constants, item
-
-
-class OutfitType(enum.Enum):
-    Crappy = enum.auto()
-    Solid = enum.auto()
-    Super = enum.auto()
-
-
-OUTFIT_TYPES = [t for t in OutfitType]
 
 
 class Outfit(item.Item):
@@ -19,11 +9,11 @@ class Outfit(item.Item):
             self,
             name: str,
             luck_stat: int,
-            outfit_type: OutfitType,
+            rarity: item.Rarity,
             defence: int
     ):
         super().__init__(name, luck_stat)
-        self.outfit_type = outfit_type
+        self.rarity = rarity
         self.defence = defence
 
 
@@ -33,11 +23,11 @@ with open(constants.DATA_BANK_FILE) as fh:
 
 def generate_outfit() -> Outfit:
     base = random.choice(OUTFIT_TYPE_BANK)
-    level = random.choices(OUTFIT_TYPES, weights=[10, 5, 1])[0]
-    level_str = level.name
+    rarity = random.choices(item.RARITIES, weights=[10, 5, 1])[0]
+    rarity_str = rarity.name
     return Outfit(
-        f"{level.name} {base['name']}",
-        base["luck"][level_str],
-        level,
-        base["defence"][level_str]
+        f"{rarity_str} {base['name']}",
+        base["luck"][rarity_str],
+        rarity,
+        base["defence"][rarity_str]
     )
