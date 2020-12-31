@@ -64,6 +64,10 @@ def attack(player: Player, enemy: Enemy):
 
         option = get_user_input("Press 'a' to continue attacking or 'f' to flee", player)
 
+    if option == 'f':
+        print(f"You fled from the {enemy.name}. Better luck next time!")
+        player.retreat()
+
 
 def collect(player: Player, chest: Chest):
     """
