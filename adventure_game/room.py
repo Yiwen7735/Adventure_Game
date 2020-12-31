@@ -14,7 +14,7 @@ from .chest import Chest
 if TYPE_CHECKING:
     from .player import Player
 from .trap import Trap
-from .weapon import Weapon
+from .weapon import Weapon, generate_weapon
 from . import action
 
 # Populate a set of descriptions from the predefined JSON
@@ -188,7 +188,10 @@ class Room(abc.ABC):
 class EmptyRoom(Room):
     """A minimal room with no special actions available."""
     def __str__(self):
-        return self.description
+        desc = self.description
+        if self.weapon is not None:
+            desc += f". There is a {self.weapon.name} lying on the floor"
+        return desc
 
     @staticmethod
     def generate(exits: List[compass.Direction]) -> Room:
@@ -200,7 +203,41 @@ class EmptyRoom(Room):
             EmptyRoom
 
         """
-        return EmptyRoom(random.choice(DESCRIPTION_BANK), exits)
+        return EmptyRoom(
+            random.choice(DESCRIPTION_BANK),
+            exits,
+            # 50% chance that the room will include a weapon
+            weapon=generate_weapon() if random.randint(0, 1) == 1 else None
+        )
+
+    def get_options(self) -> Dict[str, Callable[[Player], ...]]:
+        """
+        Determines the special actions available, given the EmptyRoom's
+        current state.
+
+        In practice, this means that the options, if the room contains a weapon,
+        are:
+        1. Take the weapon
+        2. Leave the weapon on the floor
+        If the chest has already been opened, there are no special actions
+        available.
+
+        Returns:
+            Dictionary mapping action descriptions to callback handlers.
+
+        """
+        if self.weapon is None:
+            return {}
+
+        def pick_up(player):
+            player.pick_up_item(self.weapon)
+            self.weapon = None
+
+        action_handler = {
+            f"Take the {self.weapon.name}": pick_up,
+            "Leave it alone": lambda player: None
+        }
+        return action_handler
 
 
 class MonsterRoom(Room):
