@@ -1,4 +1,4 @@
-from typing import List, Optional
+from typing import Dict, List, Optional
 
 from .character import Character
 from .compass import Direction
@@ -17,9 +17,8 @@ class Player(Character):
             outfit: Optional[Outfit] = None
     ):
         super().__init__(name, hp)
-        self.weapon = weapon
-        self.outfit = outfit
-        self.inventory: List[Item] = []
+        self.equipped = {"weapon": weapon, "outfit": outfit}
+        self.inventory: Dict[str, List[Item]] = {"weapon": [], "outfit": []}
         self.previous_room: Optional[Room] = None
         self.current_room: Optional[Room] = None
 
@@ -78,47 +77,38 @@ class Player(Character):
             item: The item that got picked up
 
         """
-        self.inventory.append(item)
+        key = "weapon" if isinstance(item, Weapon) else "outfit"
+        item_list = self.inventory[key]
+        item_list.append(item)
+        self.inventory[key] = item_list
 
-    def equip(self, option: int):
+    def equip(self, key: str, option: int):
         """
-        Equip the player with the new item they chose
+        Change the equipped item
 
         Args:
-            option: the option_th item in the inventory list
+            key: The key referring to the type of item
+            option: The option_th item in the inventory list
 
         """
-        item = self.inventory[option - 1]
-        if isinstance(item, Weapon):
-            self.change_weapon(item)
-        elif isinstance(item, Outfit):
-            self.change_outfit(item)
+        item = self.inventory[key][option - 1]
+        self.change_item(key, item)
 
-    def change_weapon(self, weapon: Weapon):
+    def change_item(self, key: str, item: Item):
         """
-        Change the equipped weapon
+        Change the equipped item
 
         Args:
-            weapon: The weapon to change to (must be contained in inventory)
+            key: The key referring to the type of item
+            item: The item to change to (must be contained in inventory list)
 
         """
-        self.inventory.remove(weapon)
-        if self.weapon is not None:
-            self.inventory.append(self.weapon)
-        self.weapon = weapon
-
-    def change_outfit(self, outfit: Outfit):
-        """
-        Change the equipped outfit
-
-        Args:
-            outfit: The outfit to change to (must be contained in inventory)
-
-        """
-        self.inventory.remove(outfit)
-        if self.outfit is not None:
-            self.inventory.append(self.outfit)
-        self.outfit = outfit
+        item_list = self.inventory[key]
+        item_list.remove(item)
+        if self.equipped[key] is not None:
+            item_list.append(self.equipped[key])
+        self.inventory[key] = item_list
+        self.equipped[key] = item
 
     def attack(self, target: Character):
         """
@@ -131,13 +121,13 @@ class Player(Character):
             WeaponBrokenException
 
         """
-        if self.weapon is None:
+        if self.equipped["weapon"] is None:
             damage = 1
         else:
-            if self.weapon.is_broken():
+            if self.equipped["weapon"].is_broken():
                 raise WeaponBrokenException()
-            damage = self.weapon.attack_strength
-            self.weapon.decrement_durability()
+            damage = self.equipped["weapon"].attack_strength
+            self.equipped["weapon"].decrement_durability()
 
         if target.is_alive():
             target.take_damage(damage)
@@ -150,4 +140,5 @@ class Player(Character):
             Total number of luck points added from equipped weapon & outfit
 
         """
-        return self.weapon.luck_stat + self.outfit.luck_stat
+        return sum([item.luck_stat for item in list(self.equipped.values())])
+
