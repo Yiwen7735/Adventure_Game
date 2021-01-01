@@ -5,7 +5,9 @@ from adventure_game.enemy import Enemy
 from adventure_game.item import Rarity
 from adventure_game.outfit import Outfit
 from adventure_game.player import Player
-from adventure_game.room import generate_first_room
+from adventure_game.room import (
+    generate_first_room, EmptyRoom, NoSuchExitException
+)
 from adventure_game.weapon import Weapon, WeaponBrokenException
 
 
@@ -213,8 +215,7 @@ class PlayerMovementTests(unittest.TestCase):
         room = generate_first_room()
         player = Player("Tester", 100, None, None)
         player.move_to(room)
-        for d in room.get_exits():
-            d = Direction[d]
+        for d in room.exits:
             if d is Direction.North:
                 new_room = player.current_room.north
             elif d is Direction.South:
@@ -227,3 +228,10 @@ class PlayerMovementTests(unittest.TestCase):
             self.assertEqual(player.current_room, new_room)
             player.retreat()
             self.assertEqual(player.current_room, room)
+
+    def test_go_invalid_direction(self):
+        room = EmptyRoom("", [Direction.North])
+        player = Player("Tester", 100, None, None)
+        player.move_to(room)
+        with self.assertRaises(NoSuchExitException):
+            player.go(Direction.South)

@@ -87,14 +87,6 @@ class Room(abc.ABC):
         """
         pass
 
-    def get_exits(self) -> List[str]:
-        """
-        Returns a list of the string names of the directions in which the
-        player can move.
-
-        """
-        return [d.name for d in self.exits]
-
     def get_options(self) -> Dict[str, Callable[[Player], Any]]:
         """
         Returns a map of the available special actions for the room, along

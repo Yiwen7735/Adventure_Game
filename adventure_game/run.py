@@ -1,6 +1,6 @@
 from . import messages, utils
 from .player import Player
-from .room import generate_first_room
+from .room import generate_first_room, NoSuchExitException
 
 
 def game_over():
@@ -29,7 +29,7 @@ def run_game():
             # Invoke the action handler for the selected option
             options[key](player)
 
-        exits = player.current_room.get_exits()
+        exits = player.current_room.exits
         dest = None
         while dest is None:
             print(
@@ -43,4 +43,9 @@ def run_game():
             if instr is None:
                 continue
             dest = utils.parse_movement_instr(instr)
-        player.go(dest)
+            if dest is not None:
+                try:
+                    player.go(dest)
+                except NoSuchExitException:
+                    print(f"There is no portal to the {dest}.")
+                    dest = None

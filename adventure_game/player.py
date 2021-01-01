@@ -58,12 +58,12 @@ class Player(Character):
         """
         Moves the Player in the target direction.
 
-        This implementation assumes that external checks guarantee that the
-        destination direction contains a Room. If this assumption does not
-        hold, a NoSuchExitException will be raised.
-
         Args:
             direction: The Direction in which the Player should move.
+
+        Raises:
+            NoSuchExitException: if the player attempts to move in a
+                                 direction that does not have a room.
 
         """
         if self.current_room is not None:
