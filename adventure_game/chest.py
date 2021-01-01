@@ -15,10 +15,17 @@ class Chest:
         """
         Generates a list of items to be served as treasure to the player.
 
+        Note that if the chest has already been opened, calling open again
+        will return the existing chest contents - it will not add new treasure
+        to the chest.
+
         Returns:
             List of Items
 
         """
+        if self.is_open:
+            return self.contents
+
         self.is_open = True
         n = random.randint(0, 3)
         for _ in range(n):
@@ -44,5 +51,4 @@ class Chest:
         Clear the chest (removing all items at once)
 
         """
-        for item in self.contents:
-            self.contents.remove(item)
+        self.contents.clear()
