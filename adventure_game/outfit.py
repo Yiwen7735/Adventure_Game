@@ -16,6 +16,11 @@ class Outfit(item.Item):
         self.rarity = rarity
         self.defence = defence
 
+    def __str__(self):
+        """Returns the string representation of the Outfit."""
+        return (f'{self.name} [defence: {self.defence}, '
+                f'luck: {self.luck_stat}]')
+
 
 with open(constants.DATA_BANK_FILE) as fh:
     OUTFIT_TYPE_BANK = json.load(fh)['outfit_types']

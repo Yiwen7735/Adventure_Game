@@ -94,7 +94,7 @@ def collect(player: Player, chest: Chest):
           "Which one would you like to take?")
 
     while len(chest.contents) > 0:
-        print_options([t.name for t in chest.contents])
+        print_options(chest.contents)
         option = get_user_input(
             "Press 'a' to take all or 'n' to take none", player
         )

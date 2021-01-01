@@ -241,7 +241,7 @@ class EmptyRoom(Room):
             self.weapon = None
 
         action_handler = {
-            f"Take the {self.weapon.name}": pick_up,
+            f"Take the {self.weapon}": pick_up,
             "Leave it alone": lambda player: None
         }
         return action_handler

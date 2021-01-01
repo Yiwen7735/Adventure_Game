@@ -30,7 +30,7 @@ def show_inventory(player: Player):
         if not len(item_list):
             print(f"You have NO {item_key}s")
         else:
-            print_options([item.name for item in item_list])
+            print_options(item_list)
 
 
 def equip(player: Player):

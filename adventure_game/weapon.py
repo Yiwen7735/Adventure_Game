@@ -22,6 +22,11 @@ class Weapon(item.Item):
         self.attack_strength = attack_strength
         self.durability = durability
 
+    def __str__(self):
+        """Returns the string representation of the Weapon."""
+        return (f'{self.name} [attack: {self.attack_strength}, '
+                f'durability: {self.durability}, luck: {self.luck_stat}]')
+
     def decrement_durability(self):
         """
         Decrement the weapon's durability by 1
