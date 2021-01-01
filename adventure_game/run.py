@@ -37,10 +37,11 @@ def run_game():
                 "There are portals to the "
                 f"{messages.list_to_comma_string(exits)}."
             )
-            dest = utils.parse_movement_instr(
-                utils.get_user_input(
-                    "What would you like to do?",
-                    player
-                )
+            instr = utils.get_user_input(
+                "What would you like to do?",
+                player
             )
+            if instr is None:
+                continue
+            dest = utils.parse_movement_instr(instr)
         player.go(dest)
