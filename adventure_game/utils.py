@@ -38,7 +38,8 @@ def equip(player: Player):
                             "[e.g., w1: weapon #1, o2: outfit #2]",
                             player)
     if option is not None:
-        option_dict = {"w": "weapon", "o": "outfit"}  # should expand it for all options?
+        # TODO: should expand it for all options?
+        option_dict = {"w": "weapon", "o": "outfit"}
         item_type = option_dict[option[0]]
         item_num = int(option[1])
         item = player.inventory[item_type][item_num - 1]
@@ -83,7 +84,8 @@ def get_user_input(prompt: str, player: Player) -> Optional[Union[int, str]]:
 
 def parse_movement_instr(instr: str) -> Optional[compass.Direction]:
     """
-    Parses an instruction of the form 'go Direction' to extract the destination.
+    Parses an instruction of the form 'go Direction' to extract the
+    destination.
 
     Args:
         instr: The user's string input.

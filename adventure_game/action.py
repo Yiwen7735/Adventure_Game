@@ -1,12 +1,12 @@
 from __future__ import annotations
 from typing import TYPE_CHECKING
 
-if TYPE_CHECKING:
-    from .player import Player
 from .chest import Chest
 from .enemy import Enemy
 from .utils import print_options, get_user_input
 from .weapon import WeaponBrokenException
+if TYPE_CHECKING:
+    from .player import Player
 
 
 def attack(player: Player, enemy: Enemy):
@@ -43,7 +43,10 @@ def attack(player: Player, enemy: Enemy):
             try:
                 player.attack(enemy)
             except WeaponBrokenException:
-                print(f"Your weapon is broken. Better run before {enemy.name} gets you")
+                print(
+                    "Your weapon is broken. "
+                    f"Better run before {enemy.name} gets you"
+                )
             else:
                 weapon_name = (
                     player.equipped["weapon"].name
@@ -62,7 +65,10 @@ def attack(player: Player, enemy: Enemy):
                 f"hp stats: {player.name} {player.hp}, {enemy.name} {enemy.hp}"
             )
 
-        option = get_user_input("Press 'a' to continue attacking or 'f' to flee", player)
+        option = get_user_input(
+            "Press 'a' to continue attacking or 'f' to flee",
+            player
+        )
 
     if option == 'f':
         print(f"You fled from the {enemy.name}. Better luck next time!")
@@ -89,7 +95,9 @@ def collect(player: Player, chest: Chest):
 
     while len(chest.contents) > 0:
         print_options([t.name for t in chest.contents])
-        option = get_user_input("Press 'a' to take all or 'n' to take none", player)
+        option = get_user_input(
+            "Press 'a' to take all or 'n' to take none", player
+        )
         if option is None:
             continue
 
@@ -109,6 +117,8 @@ def collect(player: Player, chest: Chest):
         if len(chest.contents) > 0:
             take_again = None
             while take_again is None:
-                take_again = get_user_input("Continue to take?\n1. Yes \n2. No", player)
+                take_again = get_user_input(
+                    "Continue to take?\n1. Yes \n2. No", player
+                )
             if take_again == 2:
                 break

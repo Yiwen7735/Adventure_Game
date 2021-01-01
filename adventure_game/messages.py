@@ -34,4 +34,3 @@ def list_to_comma_string(options: List[Any]) -> str:
     if len(options) == 1:
         return str(options[0])
     return ', '.join(str(o) for o in options[:-1]) + f' and {options[-1]}'
-

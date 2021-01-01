@@ -7,15 +7,15 @@ from __future__ import annotations
 import abc
 import json
 import random
-from typing import Callable, Dict, List, Optional, TYPE_CHECKING
+from typing import Any, Callable, Dict, List, Optional, TYPE_CHECKING
 
 from . import compass, constants, enemy, messages
 from .chest import Chest
-if TYPE_CHECKING:
-    from .player import Player
 from .trap import Trap
 from .weapon import Weapon, generate_weapon
 from . import action
+if TYPE_CHECKING:
+    from .player import Player
 
 # Populate a set of descriptions from the predefined JSON
 # These descriptions are used when dynamically generating new rooms
@@ -95,7 +95,7 @@ class Room(abc.ABC):
         """
         return [d.name for d in self.exits]
 
-    def get_options(self) -> Dict[str, Callable[[Player], ...]]:
+    def get_options(self) -> Dict[str, Callable[[Player], Any]]:
         """
         Returns a map of the available special actions for the room, along
         with a callback handler to implement the action.
@@ -225,13 +225,13 @@ class EmptyRoom(Room):
             weapon=generate_weapon() if random.randint(0, 1) == 1 else None
         )
 
-    def get_options(self) -> Dict[str, Callable[[Player], ...]]:
+    def get_options(self) -> Dict[str, Callable[[Player], Any]]:
         """
         Determines the special actions available, given the EmptyRoom's
         current state.
 
-        In practice, this means that the options, if the room contains a weapon,
-        are:
+        In practice, this means that the options, if the room contains a
+        weapon, are:
         1. Take the weapon
         2. Leave the weapon on the floor
         If the weapon has already been taken, or if there never was a weapon,
@@ -300,7 +300,7 @@ class MonsterRoom(Room):
             enemy.generate_enemy()
         )
 
-    def get_options(self) -> Dict[str, Callable[[Player], ...]]:
+    def get_options(self) -> Dict[str, Callable[[Player], Any]]:
         """
         Determines the special actions available, given the MonsterRoom's
         current state.
@@ -355,7 +355,7 @@ class TreasureRoom(Room):
             exits
         )
 
-    def get_options(self) -> Dict[str, Callable[[Player], ...]]:
+    def get_options(self) -> Dict[str, Callable[[Player], Any]]:
         """
         Determines the special actions available, given the TreasureRoom's
         current state.
@@ -375,7 +375,8 @@ class TreasureRoom(Room):
             return {}
 
         action_handler = {
-            "Open the chest": lambda player: action.collect(player, self.chest),
+            "Open the chest":
+                lambda player: action.collect(player, self.chest),
             "Leave it alone": lambda player: None
         }
         return action_handler

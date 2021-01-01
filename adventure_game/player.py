@@ -17,8 +17,14 @@ class Player(Character):
             outfit: Optional[Outfit] = None
     ):
         super().__init__(name, hp)
-        self.equipped = {"weapon": weapon, "outfit": outfit}
-        self.inventory: Dict[str, List[Item]] = {"weapon": [], "outfit": []}
+        self.equipped: Dict[str, Optional[Item]] = {
+            "weapon": weapon,
+            "outfit": outfit
+        }
+        self.inventory: Dict[str, List[Item]] = {
+            "weapon": [],
+            "outfit": []
+        }
         self.previous_room: Optional[Room] = None
         self.current_room: Optional[Room] = None
 
@@ -42,8 +48,8 @@ class Player(Character):
         """
         Moves the Player to the previous Room.
 
-        Note: If the previous Room is uninitialized, the behavior of this method
-        is undefined.
+        Note: If the previous Room is uninitialized, the behavior of this
+        method is undefined.
 
         """
         self.move_to(self.previous_room)
@@ -53,21 +59,22 @@ class Player(Character):
         Moves the Player in the target direction.
 
         This implementation assumes that external checks guarantee that the
-        destination direction contains a Room. If this assumption does not hold,
-        a NoSuchExitException will be raised.
+        destination direction contains a Room. If this assumption does not
+        hold, a NoSuchExitException will be raised.
 
         Args:
             direction: The Direction in which the Player should move.
 
         """
-        if direction == Direction.North:
-            self.move_to(self.current_room.north)
-        elif direction == Direction.South:
-            self.move_to(self.current_room.south)
-        elif direction == Direction.East:
-            self.move_to(self.current_room.east)
-        else:
-            self.move_to(self.current_room.west)
+        if self.current_room is not None:
+            if direction == Direction.North:
+                self.move_to(self.current_room.north)
+            elif direction == Direction.South:
+                self.move_to(self.current_room.south)
+            elif direction == Direction.East:
+                self.move_to(self.current_room.east)
+            else:
+                self.move_to(self.current_room.west)
 
     def pick_up_item(self, item: Item):
         """
@@ -140,5 +147,5 @@ class Player(Character):
             Total number of luck points added from equipped weapon & outfit
 
         """
-        return sum([item.luck_stat for item in list(self.equipped.values())])
-
+        return sum([item.luck_stat for item in list(self.equipped.values())
+                    if item is not None])

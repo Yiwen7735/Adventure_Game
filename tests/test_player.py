@@ -144,6 +144,10 @@ class PlayerTests(unittest.TestCase):
         )
         self.assertEqual(player.get_luck(), weapon.luck_stat + outfit.luck_stat)
 
+    def test_luck_no_equipped_items(self):
+        player = Player("Tester", 100, None, None)
+        self.assertEqual(player.get_luck(), 0)
+
     def test_attack_enemy(self):
         weapon = Weapon("sword", 5, Rarity.Common, 5, 5)
         outfit = Outfit("qipao", 10, Rarity.Super, 5)

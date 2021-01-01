@@ -1,6 +1,4 @@
 import enum
-import random
-from typing import List
 
 
 class Direction(enum.Enum):

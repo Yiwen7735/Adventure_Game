@@ -1,5 +1,4 @@
 from . import messages, utils
-from .compass import Direction
 from .player import Player
 from .room import generate_first_room
 

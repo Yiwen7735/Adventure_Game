@@ -5,9 +5,9 @@ from typing import TYPE_CHECKING
 
 from . import constants
 from .character import Character
+from .weapon import Weapon, generate_weapon
 if TYPE_CHECKING:
     from .player import Player
-from .weapon import Weapon, generate_weapon
 
 
 with open(constants.DATA_BANK_FILE) as fh:
