@@ -9,6 +9,9 @@ class Direction(enum.Enum):
     East = enum.auto()
     West = enum.auto()
 
+    def __str__(self):
+        return self.name
+
 
 DIRECTIONS = [Direction.North, Direction.South, Direction.East, Direction.West]
 

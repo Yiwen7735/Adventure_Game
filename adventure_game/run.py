@@ -1,4 +1,4 @@
-from . import utils
+from . import messages, utils
 from .compass import Direction
 from .player import Player
 from .room import generate_first_room
@@ -31,10 +31,16 @@ def run_game():
             options[key](player)
 
         exits = player.current_room.get_exits()
-        exit_idx = None
-        while exit_idx is None:
-            print("Where would you like to go?")
-            utils.print_options(exits)
-            exit_idx = utils.get_user_input("Enter your choice:", player)
-        dest = Direction[exits[exit_idx - 1]]
+        dest = None
+        while dest is None:
+            print(
+                "There are portals to the "
+                f"{messages.list_to_comma_string(exits)}."
+            )
+            dest = utils.parse_movement_instr(
+                utils.get_user_input(
+                    "What would you like to do?",
+                    player
+                )
+            )
         player.go(dest)

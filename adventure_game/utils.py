@@ -1,6 +1,7 @@
 from __future__ import annotations
-from typing import Iterable, Optional, TYPE_CHECKING
+from typing import Iterable, Optional, Union, TYPE_CHECKING
 
+from . import compass
 if TYPE_CHECKING:
     from .player import Player
 
@@ -45,7 +46,7 @@ def equip(player: Player):
         print(f"You equipped the {item.name}")
 
 
-def get_user_input(prompt: str, player: Player) -> Optional[str]:
+def get_user_input(prompt: str, player: Player) -> Optional[Union[int, str]]:
     """
     Prompts the user for input, and handles generic actions.
 
@@ -78,3 +79,24 @@ def get_user_input(prompt: str, player: Player) -> Optional[str]:
         return int(option)
     except ValueError:
         return option
+
+
+def parse_movement_instr(instr: str) -> Optional[compass.Direction]:
+    """
+    Parses an instruction of the form 'go Direction' to extract the destination.
+
+    Args:
+        instr: The user's string input.
+
+    Returns:
+        The direction in which to travel.
+
+    """
+    if instr.startswith('go '):
+        try:
+            return compass.Direction[instr[3:].capitalize()]
+        except KeyError:
+            # Continue to report invalid instruction
+            pass
+    print("Expected an instruction in the form: go north")
+    return None

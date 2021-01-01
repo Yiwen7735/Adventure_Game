@@ -1,3 +1,6 @@
+from typing import Any, List
+
+
 def get_a_or_an(s: str) -> str:
     """
     Determines whether the singular counter for a string should be 'a' or 'an'.
@@ -12,3 +15,23 @@ def get_a_or_an(s: str) -> str:
     if any(s.startswith(c) for c in ['a', 'e', 'i', 'o', 'u', 'honor']):
         return 'an'
     return 'a'
+
+
+def list_to_comma_string(options: List[Any]) -> str:
+    """
+    Convert a list of items to a comma-separated string, including and
+    separation for the last element.
+
+    Args:
+        options: A list of any type that implements __str__.
+
+    Returns:
+        Combined string representation.
+
+    """
+    if not options:
+        return ''
+    if len(options) == 1:
+        return str(options[0])
+    return ', '.join(str(o) for o in options[:-1]) + f' and {options[-1]}'
+
