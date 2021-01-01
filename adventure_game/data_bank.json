@@ -5,7 +5,11 @@
     "a suspicious tavern",
     "a bright room with a huge walk-in closet",
     "a splendid beach with a view of the setting sun",
-    "an engine room filled with steam"
+    "an engine room filled with steam",
+    "a school classroom",
+    "a wine cellar",
+    "a penthouse suite with a magnificent view of a bustling city",
+    "a backstage room at a qipao contest"
   ],
   "enemies": [
     {
@@ -23,6 +27,46 @@
     {
       "name": "interrupted engineer",
       "hp": 15
+    },
+    {
+      "name": "cute baby dragon",
+      "hp": 20
+    },
+    {
+      "name": "destructive dragon",
+      "hp": 100
+    },
+    {
+      "name": "frustrated ballerina",
+      "hp": 40
+    },
+    {
+      "name": "floundering shark",
+      "hp": 30
+    },
+    {
+      "name": "flustered product manager",
+      "hp": 50
+    },
+    {
+      "name": "morally-bankrupt politician",
+      "hp": 35
+    },
+    {
+      "name": "blindfolded prisoner",
+      "hp": 10
+    },
+    {
+      "name": "monkey with the scent of banana on her breath",
+      "hp": 45
+    },
+    {
+      "name": "stern-looking teacher",
+      "hp": 30
+    },
+    {
+      "name": "boozy clown",
+      "hp": 20
     }
   ],
   "weapon_types": [
@@ -55,6 +99,60 @@
         "Crappy": 0,
         "Common": 1,
         "Super": 3
+      },
+      "durability": {
+        "Crappy": 10,
+        "Common": 20,
+        "Super": 30
+      }
+    },
+    {
+      "name": "bow-and-arrow",
+      "damage": {
+        "Crappy": 6,
+        "Common": 9,
+        "Super": 12
+      },
+      "luck": {
+        "Crappy": 1,
+        "Common": 2,
+        "Super": 3
+      },
+      "durability": {
+        "Crappy": 6,
+        "Common": 10,
+        "Super": 20
+      }
+    },
+    {
+      "name": "wooden spear",
+      "damage": {
+        "Crappy": 2,
+        "Common": 5,
+        "Super": 8
+      },
+      "luck": {
+        "Crappy": 0,
+        "Common": 0,
+        "Super": 1
+      },
+      "durability": {
+        "Crappy": 4,
+        "Common": 8,
+        "Super": 15
+      }
+    },
+    {
+      "name": "dagger",
+      "damage": {
+        "Crappy": 2,
+        "Common": 4,
+        "Super": 6
+      },
+      "luck": {
+        "Crappy": 0,
+        "Common": 0,
+        "Super": 0
       },
       "durability": {
         "Crappy": 10,
@@ -96,6 +194,84 @@
         "Crappy": 2,
         "Common": 4,
         "Super": 5
+      },
+      "defence": {
+        "Crappy": 0,
+        "Common": 0,
+        "Super": 0
+      }
+    },
+    {
+      "name": "business suit",
+      "luck": {
+        "Crappy": 3,
+        "Common": 5,
+        "Super": 7
+      },
+      "defence": {
+        "Crappy": 0,
+        "Common": 0,
+        "Super": 0
+      }
+    },
+    {
+      "name": "santa costume",
+      "luck": {
+        "Crappy": 0,
+        "Common": 0,
+        "Super": 0
+      },
+      "defence": {
+        "Crappy": 0,
+        "Common": 0,
+        "Super": 0
+      }
+    },
+    {
+      "name": "dressing gown",
+      "luck": {
+        "Crappy": 0,
+        "Common": 1,
+        "Super": 1
+      },
+      "defence": {
+        "Crappy": 0,
+        "Common": 0,
+        "Super": 0
+      }
+    },
+    {
+      "name": "donkey onsie",
+      "luck": {
+        "Crappy": 1,
+        "Common": 1,
+        "Super": 1
+      },
+      "defence": {
+        "Crappy": 0,
+        "Common": 0,
+        "Super": 0
+      }
+    },
+    {
+      "name": "suit of armor",
+      "luck": {
+        "Crappy": 1,
+        "Common": 1,
+        "Super": 2
+      },
+      "defence": {
+        "Crappy": 0,
+        "Common": 0,
+        "Super": 0
+      }
+    },
+    {
+      "name": "bikini",
+      "luck": {
+        "Crappy": 2,
+        "Common": 3,
+        "Super": 4
       },
       "defence": {
         "Crappy": 0,
