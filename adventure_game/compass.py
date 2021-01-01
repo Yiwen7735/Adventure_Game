@@ -34,8 +34,3 @@ def get_opposite_dir(d: Direction) -> Direction:
     if d == Direction.East:
         return Direction.West
     return Direction.East
-
-
-def get_random_directions() -> List[Direction]:
-    n = random.randint(1, 4)
-    return random.sample(DIRECTIONS, n)

@@ -28,8 +28,6 @@ class NoSuchExitException(Exception):
     A basic exception type to be raised if the caller tries to travel in
     a direction which does not have a room.
 
-    Note: this situation should only occur as a result of a programmer error.
-
     """
     pass
 
@@ -395,7 +393,9 @@ def _generate_room(enter_from: Optional[compass.Direction] = None) -> Room:
         Room
 
     """
-    exits = compass.get_random_directions()
+    # Select between 2 and 4 directions to have an exit - 1 is not an option
+    # since it would allow for a "closed" maze to be formed
+    exits = random.sample(compass.DIRECTIONS, random.randint(2, 4))
     if enter_from is not None and enter_from not in exits:
         exits.append(enter_from)
 
