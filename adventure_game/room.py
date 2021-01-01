@@ -46,7 +46,6 @@ class Room(abc.ABC):
     Args:
         description: A player-facing description of the room.
         exits: A list of the directions in which the player can travel.
-        weapon: An optional weapon lying on the room's floor.
         trap: An optional hidden trap in the room.
 
     """
@@ -54,11 +53,9 @@ class Room(abc.ABC):
             self,
             description: str,
             exits: List[compass.Direction],
-            weapon: Optional[Weapon] = None,
             trap: Optional[Trap] = None
     ):
         self.description = description
-        self.weapon = weapon
         self.trap = trap
 
         self.exits = exits
@@ -186,7 +183,27 @@ class Room(abc.ABC):
 
 
 class EmptyRoom(Room):
-    """A minimal room with no special actions available."""
+    """
+    A minimal room. Its sole special action is the possibility of their being
+    a weapon lying on the floor, which the player may take.
+
+    Args:
+        description: A player-facing description of the room.
+        exits: A list of the directions in which the player can travel.
+        weapon: An optional weapon lying on the room's floor.
+        trap: An optional hidden trap in the room.
+
+    """
+    def __init__(
+            self,
+            description: str,
+            exits: List[compass.Direction],
+            weapon: Optional[Weapon] = None,
+            trap: Optional[Trap] = None
+    ):
+        super().__init__(description, exits, trap)
+        self.weapon = weapon
+
     def __str__(self):
         desc = self.description
         if self.weapon is not None:
@@ -194,7 +211,7 @@ class EmptyRoom(Room):
         return desc
 
     @staticmethod
-    def generate(exits: List[compass.Direction]) -> Room:
+    def generate(exits: List[compass.Direction]) -> EmptyRoom:
         """
         Produces a dynamically-generated empty room, with a description
         randomly selected from the bank.
@@ -219,8 +236,8 @@ class EmptyRoom(Room):
         are:
         1. Take the weapon
         2. Leave the weapon on the floor
-        If the chest has already been opened, there are no special actions
-        available.
+        If the weapon has already been taken, or if there never was a weapon,
+        there are no special actions available.
 
         Returns:
             Dictionary mapping action descriptions to callback handlers.
@@ -248,7 +265,6 @@ class MonsterRoom(Room):
         description: A player-facing description of the room.
         exits: A list of the directions in which the player can travel.
         monster: An Enemy to be optionally fought by the player.
-        weapon: An optional weapon lying on the room's floor.
         trap: An optional hidden trap in the room.
 
     """
@@ -257,11 +273,10 @@ class MonsterRoom(Room):
             description: str,
             exits: List[compass.Direction],
             monster: enemy.Enemy,
-            weapon: Optional[Weapon] = None,
             trap: Optional[Trap] = None
     ):
         self.monster = monster
-        super().__init__(description, exits, weapon=weapon, trap=trap)
+        super().__init__(description, exits, trap=trap)
 
     def __str__(self):
         return (
@@ -270,7 +285,7 @@ class MonsterRoom(Room):
         )
 
     @staticmethod
-    def generate(exits: List[compass.Direction]) -> Room:
+    def generate(exits: List[compass.Direction]) -> MonsterRoom:
         """
         Produces a dynamically-generated room containing an enemy.
 
@@ -317,17 +332,16 @@ class TreasureRoom(Room):
             self,
             description: str,
             exits: List[compass.Direction],
-            weapon: Optional[Weapon] = None,
             trap: Optional[Trap] = None
     ):
         self.chest = Chest()
-        super().__init__(description, exits, weapon=weapon, trap=trap)
+        super().__init__(description, exits, trap=trap)
 
     def __str__(self):
         return f'{self.description}. An enticing chest sits in the centre'
 
     @staticmethod
-    def generate(exits: List[compass.Direction]) -> Room:
+    def generate(exits: List[compass.Direction]) -> TreasureRoom:
         """
         Produces a dynamically-generated room containing treasure.
 
