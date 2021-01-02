@@ -1,6 +1,6 @@
 from __future__ import annotations
 from typing import (
-    Any, Callable, Dict, Iterable, Optional, Union, TYPE_CHECKING
+    Any, Callable, Dict, Iterable, List, Optional, Union, TYPE_CHECKING
 )
 
 from . import compass
@@ -17,7 +17,7 @@ def print_options(options: Iterable[Any]):
         print(f"{i + 1}. {option}")
 
 
-def show_inventory(player: Player):
+def show_inventory(player: Player, *args):
     """
     Display all the items the player has
 
@@ -35,39 +35,34 @@ def show_inventory(player: Player):
             print_options(item_list)
 
 
-def eat(player: Player):
-    option = get_user_input("Which item do you want to eat? ", player)
-    if option is not None:
-        if option <= len(player.foods):
-            food = player.foods[option - 1]
-            print(f"You ate the {food.name}. {food.consume_msg}.")
-            if food.restore_amount > 0:
-                print(f"You gained {food.restore_amount} hp!")
-            else:
-                print(f"You lost {food.restore_amount} hp!")
-            player.eat(option - 1)
+def eat(player: Player, *args):
+    option = int(args[0])
+    if option <= len(player.foods):
+        food = player.foods[option - 1]
+        print(f"You ate the {food.name}. {food.consume_msg}.")
+        if food.restore_amount > 0:
+            print(f"You gained {food.restore_amount} hp!")
         else:
-            print("You don't have that much food!")
+            print(f"You lost {food.restore_amount} hp!")
+        player.eat(option - 1)
+    else:
+        print("You don't have that much food!")
 
 
-def equip(player: Player):
-    option = get_user_input("Which item do you want to equip? "
-                            "[e.g., w1: weapon #1, o2: outfit #2]",
-                            player)
-    if option is not None:
-        # TODO: should expand it for all options?
-        option_dict = {"w": "weapon", "o": "outfit"}
-        item_type = option_dict[option[0]]
-        item_num = int(option[1])
-        item_list = player.inventory[item_type]
-        if item_num <= len(item_list):
-            print(f"You equipped the {item_list[item_num - 1].name}")
-            player.equip(item_type, item_num)
-        else:
-            print(f"No {item_type} found.")
+def equip(player: Player, *args):
+    # TODO: should expand it for all options?
+    option_dict = {"w": "weapon", "o": "outfit"}
+    item_type = option_dict[args[0][0]]
+    item_num = int(args[0][1])
+    item_list = player.inventory[item_type]
+    if item_num <= len(item_list):
+        print(f"You equipped the {item_list[item_num - 1].name}")
+        player.equip(item_type, item_num)
+    else:
+        print(f"No {item_type} found.")
 
 
-def throw(player: Player):
+def throw(player: Player, *args):
     if player.cur_weapon is not None:
         print(f"You just threw away your {player.cur_weapon}")
         player.throw()
@@ -75,23 +70,19 @@ def throw(player: Player):
         print("You are not holding any weapon right now")
 
 
-def drop(player: Player):
-    option = get_user_input("Which item do you want to drop? "
-                            "[e.g., w1: weapon #1, o2: outfit #2]",
-                            player)
-    if option is not None:
-        option_dict = {"w": "weapon", "o": "outfit"}
-        item_type = option_dict[option[0]]
-        item_num = int(option[1])
-        item_list = player.inventory[item_type]
-        if item_num <= len(item_list):
-            print(f"You dropped the {item_list[item_num - 1].name}")
-            player.drop(item_type, item_num)
-        else:
-            print(f"No {item_type} found.")
+def drop(player: Player, *args):
+    option_dict = {"w": "weapon", "o": "outfit"}
+    item_type = option_dict[args[0][0]]
+    item_num = int(args[0][1])
+    item_list = player.inventory[item_type]
+    if item_num <= len(item_list):
+        print(f"You dropped the {item_list[item_num - 1].name}")
+        player.drop(item_type, item_num)
+    else:
+        print(f"No {item_type} found.")
 
 
-GLOBAL_OPTIONS: Dict[str, Callable[[Player], Any]] = {
+GLOBAL_OPTIONS: Dict[str, Callable[[Player, ...], Any]] = {
     'items': show_inventory,
     'equip': equip,
     'drop': drop,
@@ -121,16 +112,16 @@ def get_user_input(prompt: str, player: Player) -> Optional[Union[int, str]]:
     """
     if not prompt.endswith(" "):
         prompt += " "
-    option = input(prompt)
+    option = input(prompt).split(" ")
 
-    if option in GLOBAL_OPTIONS:
-        GLOBAL_OPTIONS[option](player)
+    if option[0] in GLOBAL_OPTIONS:
+        GLOBAL_OPTIONS[option[0]](player, *option[1:])
         return None
 
     try:
-        return int(option)
+        return int(option[0])
     except ValueError:
-        return option
+        return " ".join(option)
 
 
 def parse_movement_instr(instr: str) -> Optional[compass.Direction]:
