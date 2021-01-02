@@ -53,8 +53,8 @@ def equip(player: Player):
 
 
 def throw(player: Player):
-    if player.equipped['weapon'] is not None:
-        print(f"You just threw away your {player.equipped['weapon']}")
+    if player.cur_weapon is not None:
+        print(f"You just threw away your {player.cur_weapon}")
         player.throw()
     else:
         print("You are not holding any weapon right now")

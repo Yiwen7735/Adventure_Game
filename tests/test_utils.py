@@ -46,14 +46,14 @@ class EquipTests(unittest.TestCase):
             equip(player)
 
             # The player should not be able to equip non-existent items
-            self.assertIsNone(player.equipped["weapon"])
+            self.assertIsNone(player.cur_weapon)
             player.pick_up_item(Outfit("qipao", 0, item.Rarity.Super, 5))
             equip(player)
-            self.assertIsNone(player.equipped["outfit"])
+            self.assertIsNone(player.cur_outfit)
 
             # The player could equip the item that exists
             equip(player)
-            self.assertEqual(player.equipped["outfit"].name, "qipao")
+            self.assertEqual(player.cur_outfit.name, "qipao")
 
 
 class ThrowTests(unittest.TestCase):
@@ -63,8 +63,8 @@ class ThrowTests(unittest.TestCase):
         first_room = room.EmptyRoom.generate([])
         player.move_to(first_room)
         throw(player)
-        self.assertIsNone(player.equipped["weapon"])
-        self.assertFalse(weapon in player.inventory['weapon'])
+        self.assertIsNone(player.cur_weapon)
+        self.assertFalse(weapon in player.weapons)
         self.assertIn(weapon, first_room.items)
 
 
@@ -86,15 +86,15 @@ class DropTests(unittest.TestCase):
 
         with patch("builtins.input", mock_input):
             drop(player)
-            self.assertFalse(weapon in player.inventory["weapon"])
+            self.assertFalse(weapon in player.weapons)
             self.assertIn(weapon, first_room.items)
             drop(player)
-            self.assertTrue(outfit in player.inventory["outfit"])
+            self.assertTrue(outfit in player.outfits)
             self.assertNotIn(outfit, first_room.items)
             drop(player)
-            self.assertFalse(outfit in player.inventory["outfit"])
+            self.assertFalse(outfit in player.outfits)
             self.assertIn(outfit, first_room.items)
 
             # The equipped items are still none
-            self.assertIsNone(player.equipped["weapon"])
-            self.assertIsNone(player.equipped["outfit"])
+            self.assertIsNone(player.cur_weapon)
+            self.assertIsNone(player.cur_outfit)

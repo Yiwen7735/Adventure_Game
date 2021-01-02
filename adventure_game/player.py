@@ -1,4 +1,4 @@
-from typing import Dict, List, Optional
+from typing import cast, Dict, List, Optional
 
 from .character import Character
 from .compass import Direction
@@ -28,9 +28,33 @@ class Player(Character):
         self.previous_room: Optional[Room] = None
         self.current_room: Optional[Room] = None
 
+    @property
+    def cur_weapon(self) -> Weapon:
+        return cast(Weapon, self.equipped["weapon"])
+
+    @cur_weapon.setter
+    def cur_weapon(self, weapon: Weapon):
+        self.equipped["weapon"] = weapon
+
+    @property
+    def cur_outfit(self) -> Outfit:
+        return cast(Outfit, self.equipped["outfit"])
+
+    @cur_outfit.setter
+    def cur_outfit(self, outfit: Outfit):
+        self.equipped["outfit"] = outfit
+
+    @property
+    def weapons(self) -> List[Weapon]:
+        return cast(List[Weapon], self.inventory["weapon"])
+
+    @property
+    def outfits(self) -> List[Outfit]:
+        return cast(List[Outfit], self.inventory["outfit"])
+
     def __str__(self):
-        weapon = self.equipped['weapon']
-        outfit = self.equipped['outfit']
+        weapon = self.cur_weapon
+        outfit = self.cur_outfit
         return f"{self.name}: hp {self.hp}, " \
                f"holding {'Nothing' if weapon is None else weapon}, " \
                f"wearing {'Nothing' if outfit is None else outfit}"
@@ -91,10 +115,10 @@ class Player(Character):
             item: The item that got picked up
 
         """
-        key = "weapon" if isinstance(item, Weapon) else "outfit"
-        item_list = self.inventory[key]
-        item_list.append(item)
-        self.inventory[key] = item_list
+        if isinstance(item, Weapon):
+            self.weapons.append(item)
+        elif isinstance(item, Outfit):
+            self.outfits.append(item)
 
     def equip(self, key: str, option: int):
         """
@@ -106,7 +130,7 @@ class Player(Character):
 
         """
         item = self.inventory[key][option - 1]
-        self.change_item(key, item)
+        self.change_item(key, cast(EquipmentItem, item))
 
     def change_item(self, key: str, item: EquipmentItem):
         """
@@ -117,11 +141,9 @@ class Player(Character):
             item: The item to change to (must be contained in inventory list)
 
         """
-        item_list = self.inventory[key]
-        item_list.remove(item)
+        self.inventory[key].remove(item)
         if self.equipped[key] is not None:
-            item_list.append(self.equipped[key])
-        self.inventory[key] = item_list
+            self.inventory[key].append(self.equipped[key])
         self.equipped[key] = item
 
     def throw(self):
@@ -129,7 +151,7 @@ class Player(Character):
         Throw away the weapon currently equipped
         """
         self.current_room.add_item(self.equipped["weapon"])
-        self.equipped["weapon"] = None
+        self.cur_weapon = None
 
     def drop(self, key: str, option: int):
         """
@@ -140,10 +162,8 @@ class Player(Character):
             option: The option_th item in the inventory list
 
         """
-        item_list = self.inventory[key]
-        drop_item = item_list[option - 1]
-        item_list.remove(drop_item)
-        self.inventory[key] = item_list
+        drop_item = self.inventory[key][option - 1]
+        self.inventory[key].remove(drop_item)
         self.current_room.add_item(drop_item)
 
     def attack(self, target: Character):
@@ -160,10 +180,10 @@ class Player(Character):
         if self.equipped["weapon"] is None:
             damage = 1
         else:
-            if self.equipped["weapon"].is_broken():
+            if self.cur_weapon.is_broken():
                 raise WeaponBrokenException()
-            damage = self.equipped["weapon"].attack_strength
-            self.equipped["weapon"].decrement_durability()
+            damage = self.cur_weapon.attack_strength
+            self.cur_weapon.decrement_durability()
 
         if target.is_alive():
             target.take_damage(damage)
@@ -178,3 +198,6 @@ class Player(Character):
         """
         return sum([item.luck_stat for item in list(self.equipped.values())
                     if item is not None])
+
+
+
