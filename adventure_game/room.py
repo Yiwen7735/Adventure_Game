@@ -89,6 +89,10 @@ class Room(abc.ABC):
         """
         pass
 
+    def add_item(self, new_item: item.Item):
+        """Adds a new item to the floor of the room."""
+        self.items.append(new_item)
+
     def get_options(self) -> Dict[str, Callable[[Player], Any]]:
         """
         Returns a map of the available special actions for the room, along

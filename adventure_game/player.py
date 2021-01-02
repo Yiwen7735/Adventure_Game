@@ -128,19 +128,23 @@ class Player(Character):
         """
         Throw away the weapon currently equipped
         """
+        self.current_room.add_item(self.equipped["weapon"])
         self.equipped["weapon"] = None
 
     def drop(self, key: str, option: int):
         """
-        Drop an item from the inventory
+        Drop an item from the inventory into the current room.
+
         Args:
             key: The key referring to the type of item
             option: The option_th item in the inventory list
 
         """
         item_list = self.inventory[key]
-        item_list.remove(item_list[option - 1])
+        drop_item = item_list[option - 1]
+        item_list.remove(drop_item)
         self.inventory[key] = item_list
+        self.current_room.add_item(drop_item)
 
     def attack(self, target: Character):
         """

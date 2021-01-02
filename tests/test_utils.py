@@ -1,7 +1,7 @@
 import unittest
 from unittest.mock import patch
 
-from adventure_game import item
+from adventure_game import item, room
 from adventure_game.compass import Direction
 from adventure_game.outfit import Outfit
 from adventure_game.player import Player
@@ -53,16 +53,19 @@ class EquipTests(unittest.TestCase):
 
             # The player could equip the item that exists
             equip(player)
-            self.assertEqual(player.equipped["outfit"].name, "qipao");
+            self.assertEqual(player.equipped["outfit"].name, "qipao")
 
 
 class ThrowTests(unittest.TestCase):
     def test_throw_weapon(self):
         weapon = Weapon("gun", 5, item.Rarity.Super, 10, 10)
         player = Player("Tester", 100, weapon, None)
+        first_room = room.EmptyRoom.generate([])
+        player.move_to(first_room)
         throw(player)
         self.assertIsNone(player.equipped["weapon"])
         self.assertFalse(weapon in player.inventory['weapon'])
+        self.assertIn(weapon, first_room.items)
 
 
 class DropTests(unittest.TestCase):
@@ -73,6 +76,9 @@ class DropTests(unittest.TestCase):
         player.pick_up_item(weapon)
         player.pick_up_item(outfit)
 
+        first_room = room.EmptyRoom.generate([])
+        player.move_to(first_room)
+
         inputs = (i for i in ["w1", "o2", "o1"])
 
         def mock_input(*args):
@@ -81,10 +87,13 @@ class DropTests(unittest.TestCase):
         with patch("builtins.input", mock_input):
             drop(player)
             self.assertFalse(weapon in player.inventory["weapon"])
+            self.assertIn(weapon, first_room.items)
             drop(player)
             self.assertTrue(outfit in player.inventory["outfit"])
+            self.assertNotIn(outfit, first_room.items)
             drop(player)
             self.assertFalse(outfit in player.inventory["outfit"])
+            self.assertIn(outfit, first_room.items)
 
             # The equipped items are still none
             self.assertIsNone(player.equipped["weapon"])
