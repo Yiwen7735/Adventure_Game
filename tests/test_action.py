@@ -44,7 +44,7 @@ class FightLoopTests(unittest.TestCase):
             None
         )
         monster = enemy.Enemy(
-            "boss", 30, Weapon("gun", 0, item.Rarity.Crappy, 5, 5)
+            "boss", "boss", 30, Weapon("gun", 0, item.Rarity.Crappy, 5, 5)
         )
         room = MonsterRoom("test classroom", [], monster)
         player.move_to(room)

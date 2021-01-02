@@ -14,58 +14,72 @@
   "enemies": [
     {
       "name": "weary traveller",
+      "short_name": "traveller",
       "hp": 5
     },
     {
       "name": "cowering troll",
+      "short_name": "troll",
       "hp": 10
     },
     {
       "name": "towering ogre",
+      "short_name": "ogre",
       "hp": 25
     },
     {
       "name": "interrupted engineer",
+      "short_name": "engineer",
       "hp": 15
     },
     {
       "name": "cute baby dragon",
+      "short_name": "baby dragon",
       "hp": 20
     },
     {
       "name": "destructive dragon",
+      "short_name": "dragon",
       "hp": 100
     },
     {
       "name": "frustrated ballerina",
+      "short_name": "ballerina",
       "hp": 40
     },
     {
       "name": "floundering shark",
+      "short_name": "shark",
       "hp": 30
     },
     {
       "name": "flustered product manager",
+      "short_name": "product manager",
       "hp": 50
     },
     {
       "name": "morally-bankrupt politician",
+      "short_name": "politician",
       "hp": 35
     },
     {
       "name": "blindfolded prisoner",
+      "short_name": "prisoner",
       "hp": 10
     },
     {
       "name": "monkey with the scent of banana on her breath",
+      "short_name": "monkey",
       "hp": 45
     },
     {
       "name": "stern-looking teacher",
+      "short_name": "teacher",
       "hp": 30
     },
     {
       "name": "boozy clown",
+      "short_name": "clown",
       "hp": 20
     }
   ],

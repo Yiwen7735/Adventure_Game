@@ -159,7 +159,9 @@ class PlayerTests(unittest.TestCase):
             weapon,
             outfit
         )
-        enemy = Enemy("beast", 10, Weapon("axe", 0, Rarity.Crappy, 5, 10))
+        enemy = Enemy(
+            "beast", "beast", 10, Weapon("axe", 0, Rarity.Crappy, 5, 10)
+        )
         player.attack(enemy)
         self.assertEqual(enemy.hp, 5)
         self.assertEqual(player.equipped["weapon"].durability, 4)
@@ -180,7 +182,9 @@ class PlayerTests(unittest.TestCase):
             weapon,
             outfit
         )
-        enemy = Enemy("beast", 10, Weapon("axe", 0, Rarity.Crappy, 5, 10))
+        enemy = Enemy(
+            "beast", "best", 10, Weapon("axe", 0, Rarity.Crappy, 5, 10)
+        )
         player.attack(enemy)
         self.assertEqual(enemy.hp, 5)
         self.assertEqual(player.equipped["weapon"].durability, 0)
@@ -191,7 +195,9 @@ class PlayerTests(unittest.TestCase):
 
     def test_attack_unarmed(self):
         player = Player("Tester", 100, None, None)
-        enemy = Enemy("beast", 10, Weapon("axe", 0, Rarity.Crappy, 5, 10))
+        enemy = Enemy(
+            "beast", "beast", 10, Weapon("axe", 0, Rarity.Crappy, 5, 10)
+        )
         player.attack(enemy)
         self.assertEqual(enemy.hp, 9)
 

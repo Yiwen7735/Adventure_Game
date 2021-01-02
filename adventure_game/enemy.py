@@ -15,7 +15,8 @@ with open(constants.DATA_BANK_FILE) as fh:
 
 
 class Enemy(Character):
-    def __init__(self, name: str, hp: int, weapon: Weapon):
+    def __init__(self, name: str, short_name: str, hp: int, weapon: Weapon):
+        self.short_name = short_name
         self.weapon = weapon
         super().__init__(name, hp)
 
@@ -43,6 +44,7 @@ def generate_enemy() -> Enemy:
     weapon = generate_weapon()
     return Enemy(
         presets['name'],
+        presets.get('short_name', presets['name']),
         presets['hp'],
         weapon
     )

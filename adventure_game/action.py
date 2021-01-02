@@ -42,16 +42,20 @@ def attack(player: Player, enemy: Enemy):
                     if player.equipped["weapon"] is not None
                     else 'fists'
                 )
-                print(f"You attacked {enemy.name} with your {weapon_name}")
+                print(
+                    f"You attacked the {enemy.short_name} with your "
+                    f"{weapon_name}"
+                )
 
             if not enemy.is_alive():
-                print(f"You took down the {enemy.name}!")
+                print(f"You took down the {enemy.short_name}!")
                 break
 
             enemy.attack(player)
 
             print(
-                f"hp stats: {player.name} {player.hp}, {enemy.name} {enemy.hp}"
+                f"hp stats: {player.name} {player.hp}, "
+                f"{enemy.short_name} {enemy.hp}"
             )
 
         message = "Press 'a' to continue attacking or 'f' to flee"
@@ -60,7 +64,7 @@ def attack(player: Player, enemy: Enemy):
         option = get_user_input(message, player)
 
     if option == 'f':
-        print(f"You fled from the {enemy.name}. Better luck next time!")
+        print(f"You fled from the {enemy.short_name}. Better luck next time!")
         player.retreat()
 
 
