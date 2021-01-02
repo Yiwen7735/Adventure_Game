@@ -303,43 +303,53 @@
   "food": [
     {
       "name": "small apple",
-      "hp": 5
+      "hp": 5,
+      "msg": "hmm...crunchy"
     },
     {
       "name": "fuji apple",
-      "hp": 15
+      "hp": 15,
+      "msg": "One could argue it is THE best apple in the world"
     },
     {
       "name": "mouldy pizza",
-      "hp": 5
+      "hp": -10,
+      "msg": "guess that wasn't pepperoni"
     },
     {
       "name": "spicy mapo doufu",
-      "hp": 15
+      "hp": 15,
+      "msg": "[*spicy coughing*].."
     },
     {
       "name": "filling mala tang",
-      "hp": 25
+      "hp": 25,
+      "msg": "[*burping*].."
     },
     {
       "name": "chocolate bar",
-      "hp": 5
+      "hp": 5,
+      "msg": "be careful, it could make you fat.."
     },
     {
       "name": "chili chips",
-      "hp": 10
+      "hp": 10,
+      "msg": "enjoy your favourite flavour~"
     },
     {
       "name": "peanuts",
-      "hp": 5
+      "hp": 5,
+      "msg": "gotta say...they are better in mala tang"
     },
     {
       "name": "suspicious mushroom",
-      "hp": -100
+      "hp": -100,
+      "msg": "Oops, the mushroom is poisonous.."
     },
     {
       "name": "dry hot pot",
-      "hp": -30
+      "hp": -30,
+      "msg": "you can feel the diarrhea is coming.."
     }
   ]
 }
