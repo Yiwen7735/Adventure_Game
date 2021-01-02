@@ -281,7 +281,7 @@ class MonsterRoom(Room):
             action_handler = {
                 f"Attack {self.monster.name}":
                     lambda player: action.attack(player, self.monster),
-                "Run back": lambda player: player.retreat()
+                "Run back": action.retreat
             }
             return action_handler
         return super().get_options()

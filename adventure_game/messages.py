@@ -1,5 +1,7 @@
 from typing import Any, List
 
+from .room import Room
+
 
 def get_a_or_an(s: str) -> str:
     """
@@ -34,3 +36,8 @@ def list_to_comma_string(options: List[Any]) -> str:
     if len(options) == 1:
         return str(options[0])
     return ', '.join(str(o) for o in options[:-1]) + f' and {options[-1]}'
+
+
+def print_enter(room: Room):
+    """Prints a message indicating the entered room."""
+    print(f"You enter {room}.")

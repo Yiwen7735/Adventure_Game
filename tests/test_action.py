@@ -1,3 +1,5 @@
+import contextlib
+import io
 import unittest
 from unittest.mock import patch
 
@@ -24,11 +26,14 @@ class FightLoopTests(unittest.TestCase):
             return "f"
 
         player.go(Direction.North)
-        with patch('builtins.input', mock_input):
+        f = io.StringIO()
+        with patch('builtins.input', mock_input), contextlib.redirect_stdout(f):
             action.attack(player, player.current_room.monster)
 
         # The player should be back in the starting room after fleeing the fight
         self.assertIs(player.current_room, first_room)
+        # The previous room's description was output to stdout
+        self.assertIn(str(player.current_room), f.getvalue())
 
     def test_fight_until_player_dead(self):
         """Tests that a fight concludes when the player dies."""

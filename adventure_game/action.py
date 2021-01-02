@@ -1,7 +1,7 @@
 from __future__ import annotations
 from typing import List, TYPE_CHECKING
 
-from . import item
+from . import item, messages
 from .chest import Chest
 from .enemy import Enemy
 from .utils import print_options, get_user_input
@@ -65,7 +65,7 @@ def attack(player: Player, enemy: Enemy):
 
     if option == 'f':
         print(f"You fled from the {enemy.short_name}. Better luck next time!")
-        player.retreat()
+        retreat(player)
 
 
 def take_loop(player: Player, items: List[item.Item]):
@@ -127,3 +127,16 @@ def collect(player: Player, chest: Chest):
           "Which one would you like to take?")
 
     take_loop(player, chest.contents)
+
+
+def retreat(player: Player):
+    """
+    Causes the Player to retreat to their previous room.
+
+    This may be used instead of Player.retreat when it is desired that the game
+    treats this movement as a re-entry of the room, including printing the
+    room's description.
+
+    """
+    messages.print_enter(player.previous_room)
+    player.retreat()

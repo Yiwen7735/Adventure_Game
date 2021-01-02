@@ -15,7 +15,7 @@ def run_game():
     player.move_to(generate_first_room())
 
     while True:
-        print("You enter " + str(player.current_room) + ".")
+        messages.print_enter(player.current_room)
         options = player.current_room.get_options()
         if options:
             action_id = None

@@ -1,7 +1,10 @@
+import contextlib
+from io import StringIO
 import unittest
 from unittest.mock import patch
 
 from adventure_game.compass import Direction, DIRECTIONS
+from adventure_game.player import Player
 from adventure_game.room import (
     EmptyRoom,
     MonsterRoom,
@@ -69,3 +72,21 @@ class EmptyRoomTests(unittest.TestCase):
         with patch('adventure_game.room.random.randint', lambda a, b: 0):
             room = EmptyRoom.generate([])
         self.assertEqual(room.items, [])
+
+
+class MonsterRoomTests(unittest.TestCase):
+    def test_player_retreat_outputs_previous_room_description(self):
+        first_room = EmptyRoom.generate([Direction.North])
+        first_room.north = MonsterRoom.generate([Direction.South])
+
+        player = Player("Tester", 100)
+        player.move_to(first_room)
+        player.go(Direction.North)
+
+        options = player.current_room.get_options()
+
+        f = StringIO()
+        with contextlib.redirect_stdout(f):
+            options['Run back'](player)
+
+        self.assertIn(str(first_room), f.getvalue())
