@@ -8,7 +8,7 @@ class WeaponBrokenException(Exception):
     pass
 
 
-class Weapon(item.Item):
+class Weapon(item.EquipmentItem):
     def __init__(
             self,
             name: str,

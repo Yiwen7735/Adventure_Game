@@ -2,7 +2,7 @@ from typing import Dict, List, Optional
 
 from .character import Character
 from .compass import Direction
-from .item import Item
+from .item import EquipmentItem, Item
 from .outfit import Outfit
 from .room import Room
 from .weapon import Weapon, WeaponBrokenException
@@ -17,7 +17,7 @@ class Player(Character):
             outfit: Optional[Outfit] = None
     ):
         super().__init__(name, hp)
-        self.equipped: Dict[str, Optional[Item]] = {
+        self.equipped: Dict[str, Optional[EquipmentItem]] = {
             "weapon": weapon,
             "outfit": outfit
         }
@@ -108,7 +108,7 @@ class Player(Character):
         item = self.inventory[key][option - 1]
         self.change_item(key, item)
 
-    def change_item(self, key: str, item: Item):
+    def change_item(self, key: str, item: EquipmentItem):
         """
         Change the equipped item
 

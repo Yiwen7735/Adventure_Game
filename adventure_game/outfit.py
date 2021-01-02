@@ -4,7 +4,7 @@ import random
 from . import constants, item
 
 
-class Outfit(item.Item):
+class Outfit(item.EquipmentItem):
     def __init__(
             self,
             name: str,
