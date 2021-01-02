@@ -43,7 +43,7 @@ def eat(player: Player, *args):
         if food.restore_amount > 0:
             print(f"You gained {food.restore_amount} hp!")
         else:
-            print(f"You lost {food.restore_amount} hp!")
+            print(f"You lost {abs(food.restore_amount)} hp!")
         player.eat(option - 1)
     else:
         print("You don't have that much food!")
