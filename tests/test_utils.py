@@ -5,7 +5,8 @@ from adventure_game import item
 from adventure_game.compass import Direction
 from adventure_game.outfit import Outfit
 from adventure_game.player import Player
-from adventure_game.utils import equip, parse_movement_instr
+from adventure_game.utils import drop, equip, parse_movement_instr, throw
+from adventure_game.weapon import Weapon
 
 
 class ParseMovementTests(unittest.TestCase):
@@ -53,3 +54,38 @@ class EquipTests(unittest.TestCase):
             # The player could equip the item that exists
             equip(player)
             self.assertEqual(player.equipped["outfit"].name, "qipao");
+
+
+class ThrowTests(unittest.TestCase):
+    def test_throw_weapon(self):
+        weapon = Weapon("gun", 5, item.Rarity.Super, 10, 10)
+        player = Player("Tester", 100, weapon, None)
+        throw(player)
+        self.assertIsNone(player.equipped["weapon"])
+        self.assertFalse(weapon in player.inventory['weapon'])
+
+
+class DropTests(unittest.TestCase):
+    def test_drop_items(self):
+        player = Player("Tester", 100, None, None)
+        weapon = Weapon("sword", 5, item.Rarity.Common, 10, 10)
+        outfit = Outfit("vest", 6, item.Rarity.Super, 20)
+        player.pick_up_item(weapon)
+        player.pick_up_item(outfit)
+
+        inputs = (i for i in ["w1", "o2", "o1"])
+
+        def mock_input(*args):
+            return next(inputs)
+
+        with patch("builtins.input", mock_input):
+            drop(player)
+            self.assertFalse(weapon in player.inventory["weapon"])
+            drop(player)
+            self.assertTrue(outfit in player.inventory["outfit"])
+            drop(player)
+            self.assertFalse(outfit in player.inventory["outfit"])
+
+            # The equipped items are still none
+            self.assertIsNone(player.equipped["weapon"])
+            self.assertIsNone(player.equipped["outfit"])

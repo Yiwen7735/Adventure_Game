@@ -50,6 +50,30 @@ def equip(player: Player):
             print(f"No {item_type} found.")
 
 
+def throw(player: Player):
+    if player.equipped['weapon'] is not None:
+        print(f"You just threw away your {player.equipped['weapon']}")
+        player.throw()
+    else:
+        print("You are not holding any weapon right now")
+
+
+def drop(player: Player):
+    option = get_user_input("Which item do you want to drop? "
+                            "[e.g., w1: weapon #1, o2: outfit #2]",
+                            player)
+    if option is not None:
+        option_dict = {"w": "weapon", "o": "outfit"}
+        item_type = option_dict[option[0]]
+        item_num = int(option[1])
+        item_list = player.inventory[item_type]
+        if item_num <= len(item_list):
+            print(f"You dropped the {item_list[item_num - 1].name}")
+            player.drop(item_type, item_num)
+        else:
+            print(f"No {item_type} found.")
+
+
 def get_user_input(prompt: str, player: Player) -> Optional[Union[int, str]]:
     """
     Prompts the user for input, and handles generic actions.
@@ -71,16 +95,25 @@ def get_user_input(prompt: str, player: Player) -> Optional[Union[int, str]]:
     if not prompt.endswith(" "):
         prompt += " "
     option = input(prompt)
-    if option == 'i':
+    if option == 'items':
         show_inventory(player)
         return None
 
-    if option == 'e':
+    if option == 'equip':
         equip(player)
+        return None
+
+    if option == 'drop':
+        drop(player)
+        return None
+
+    if option == 'throw':
+        throw(player)
         return None
 
     if option == 'me':
         print(player)
+        return None
 
     try:
         return int(option)

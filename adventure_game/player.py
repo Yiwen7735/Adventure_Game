@@ -124,6 +124,24 @@ class Player(Character):
         self.inventory[key] = item_list
         self.equipped[key] = item
 
+    def throw(self):
+        """
+        Throw away the weapon currently equipped
+        """
+        self.equipped["weapon"] = None
+
+    def drop(self, key: str, option: int):
+        """
+        Drop an item from the inventory
+        Args:
+            key: The key referring to the type of item
+            option: The option_th item in the inventory list
+
+        """
+        item_list = self.inventory[key]
+        item_list.remove(item_list[option - 1])
+        self.inventory[key] = item_list
+
     def attack(self, target: Character):
         """
         Attack the target character

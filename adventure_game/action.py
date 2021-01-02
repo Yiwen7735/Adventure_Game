@@ -13,7 +13,7 @@ def attack(player: Player, enemy: Enemy):
     """
     Enter a loop of attack between player and enemy, consisting of
         - 1. if the player is killed, game over
-        - 2. remind the player if their hp falls below 10
+        - 2. remind the player if their hp falls below 20
         - 3. remind the player if their weapon is broken
         - 4. if enemy isn't killed, attacks back
         - 5. display hp status at the end of each mutual attack
@@ -27,25 +27,13 @@ def attack(player: Player, enemy: Enemy):
     while option != "f":
         if not player.is_alive():
             break
-        if player.hp < 10:
-            run = None
-            while run is None:
-                run = get_user_input(
-                    "RUN AWAY?? 1.Hell yeah  "
-                    "2.Nope, gonna fight till I die",
-                    player
-                )
-            if run == 1:
-                player.retreat()
-                break
 
         if option == "a":
             try:
                 player.attack(enemy)
             except WeaponBrokenException:
                 print(
-                    "Your weapon is broken. "
-                    f"Better run before {enemy.name} gets you"
+                    "Your weapon is BROKENNNN! Throw it away and RUNNN--"
                 )
             else:
                 weapon_name = (
@@ -65,10 +53,10 @@ def attack(player: Player, enemy: Enemy):
                 f"hp stats: {player.name} {player.hp}, {enemy.name} {enemy.hp}"
             )
 
-        option = get_user_input(
-            "Press 'a' to continue attacking or 'f' to flee",
-            player
-        )
+        message = "Press 'a' to continue attacking or 'f' to flee"
+        if player.hp < 20:
+            message = "Your hp is at a dangerous level. RUN AWAY??"
+        option = get_user_input(message, player)
 
     if option == 'f':
         print(f"You fled from the {enemy.name}. Better luck next time!")
