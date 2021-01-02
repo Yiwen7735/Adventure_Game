@@ -22,7 +22,7 @@ class Character:
             points: The amount of hp points to restore to the Character.
 
         """
-        self.hp = min(self.hp + points, self.max_hp)
+        self.hp = max(0, min(self.hp + points, self.max_hp))
 
     def is_alive(self) -> bool:
         """
