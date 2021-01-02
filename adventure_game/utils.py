@@ -8,7 +8,7 @@ if TYPE_CHECKING:
     from .player import Player
 
 
-def print_options(options: Iterable[str]):
+def print_options(options: Iterable[Any]):
     """
     Prints the options, numbered 1 to len(options).
 
@@ -39,7 +39,12 @@ def eat(player: Player):
     option = get_user_input("Which item do you want to eat? ", player)
     if option is not None:
         if option <= len(player.foods):
-            print(f"You ate the {player.foods[option - 1].name}")
+            food = player.foods[option - 1]
+            print(f"You ate the {food.name}. {food.consume_msg}.")
+            if food.restore_amount > 0:
+                print(f"You gained {food.restore_amount} hp!")
+            else:
+                print(f"You lost {food.restore_amount} hp!")
             player.eat(option - 1)
         else:
             print("You don't have that much food!")
@@ -148,4 +153,3 @@ def parse_movement_instr(instr: str) -> Optional[compass.Direction]:
             pass
     print("Expected an instruction in the form: go north")
     return None
-
