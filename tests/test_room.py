@@ -61,11 +61,11 @@ class EmptyRoomTests(unittest.TestCase):
         # be added to the room
         with patch('adventure_game.room.random.randint', lambda a, b: 1):
             room = EmptyRoom.generate([])
-        self.assertIsInstance(room.weapon, Weapon)
+        self.assertIsInstance(room.items[0], Weapon)
 
     def test_no_random_weapon(self):
         # Mock the random.randint function to guarantee that a weapon should
         # not be added to the room
         with patch('adventure_game.room.random.randint', lambda a, b: 0):
             room = EmptyRoom.generate([])
-        self.assertIsNone(room.weapon)
+        self.assertEqual(room.items, [])

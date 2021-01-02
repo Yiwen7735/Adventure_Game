@@ -1,6 +1,7 @@
 from __future__ import annotations
-from typing import TYPE_CHECKING
+from typing import List, TYPE_CHECKING
 
+from . import item
 from .chest import Chest
 from .enemy import Enemy
 from .utils import print_options, get_user_input
@@ -63,6 +64,46 @@ def attack(player: Player, enemy: Enemy):
         player.retreat()
 
 
+def take_loop(player: Player, items: List[item.Item]):
+    """
+    Enter a loop of collecting items from a list.
+
+    Args:
+        player: The Player in the game.
+        items: The available items.
+
+    """
+    while len(items) > 0:
+        print_options(items)
+        option = get_user_input(
+            "Press 'a' to take all or 'n' to take none", player
+        )
+        if option is None:
+            continue
+
+        if option == 'a':
+            for treasure in items:
+                print(f"You picked up {treasure.name}!")
+                player.pick_up_item(treasure)
+            items.clear()
+        elif option == 'n':
+            break
+        else:
+            treasure = items[option - 1]
+            print(f"You picked up {treasure.name}!")
+            player.pick_up_item(treasure)
+            items.remove(treasure)
+
+        if len(items) > 0:
+            take_again = None
+            while take_again is None:
+                take_again = get_user_input(
+                    "Continue to take?\n1. Yes \n2. No", player
+                )
+            if take_again == 2:
+                break
+
+
 def collect(player: Player, chest: Chest):
     """
     Enter a loop of collecting items found in the chest
@@ -81,32 +122,4 @@ def collect(player: Player, chest: Chest):
     print("Looks like you've found something...\n"
           "Which one would you like to take?")
 
-    while len(chest.contents) > 0:
-        print_options(chest.contents)
-        option = get_user_input(
-            "Press 'a' to take all or 'n' to take none", player
-        )
-        if option is None:
-            continue
-
-        if option == 'a':
-            for treasure in chest.contents:
-                print(f"You picked up {treasure.name}!")
-                player.pick_up_item(treasure)
-            chest.contents.clear()
-        elif option == 'n':
-            break
-        else:
-            treasure = chest.contents[option - 1]
-            print(f"You picked up {treasure.name}!")
-            player.pick_up_item(treasure)
-            chest.contents.remove(treasure)
-
-        if len(chest.contents) > 0:
-            take_again = None
-            while take_again is None:
-                take_again = get_user_input(
-                    "Continue to take?\n1. Yes \n2. No", player
-                )
-            if take_again == 2:
-                break
+    take_loop(player, chest.contents)

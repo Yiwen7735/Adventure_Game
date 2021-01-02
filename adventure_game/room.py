@@ -9,10 +9,10 @@ import json
 import random
 from typing import Any, Callable, Dict, List, Optional, TYPE_CHECKING
 
-from . import compass, constants, enemy, messages
+from . import compass, constants, item, enemy, messages
 from .chest import Chest
 from .trap import Trap
-from .weapon import Weapon, generate_weapon
+from .weapon import generate_weapon
 from . import action
 if TYPE_CHECKING:
     from .player import Player
@@ -51,9 +51,11 @@ class Room(abc.ABC):
             self,
             description: str,
             exits: List[compass.Direction],
+            items: Optional[List[item.Item]] = None,
             trap: Optional[Trap] = None
     ):
         self.description = description
+        self.items: List[item.Item] = items if items is not None else []
         self.trap = trap
 
         self.exits = exits
@@ -93,10 +95,18 @@ class Room(abc.ABC):
         with a callback handler to implement the action.
 
         Note that it is intended, but not required, that subclasses override
-        this method to provide their own state-dependent actions.
+        this method to provide their own state-dependent actions. They should
+        each call this base class method to facilitate pick-up of dropped
+        items or food.
 
         """
-        return {}
+        options = {}
+        if self.items:
+            options['Look at items on the floor'] = \
+                lambda player: action.take_loop(player, self.items)
+            options['Ignore floor-based garbage'] = lambda _: None
+
+        return options
 
     def _get_exit_room(self, d: compass.Direction):
         """
@@ -177,27 +187,11 @@ class EmptyRoom(Room):
     A minimal room. Its sole special action is the possibility of their being
     a weapon lying on the floor, which the player may take.
 
-    Args:
-        description: A player-facing description of the room.
-        exits: A list of the directions in which the player can travel.
-        weapon: An optional weapon lying on the room's floor.
-        trap: An optional hidden trap in the room.
-
     """
-    def __init__(
-            self,
-            description: str,
-            exits: List[compass.Direction],
-            weapon: Optional[Weapon] = None,
-            trap: Optional[Trap] = None
-    ):
-        super().__init__(description, exits, trap)
-        self.weapon = weapon
-
     def __str__(self):
         desc = self.description
-        if self.weapon is not None:
-            desc += f". There is a {self.weapon.name} lying on the floor"
+        if self.items:
+            desc += f". There is something lying on the floor"
         return desc
 
     @staticmethod
@@ -214,37 +208,8 @@ class EmptyRoom(Room):
             random.choice(DESCRIPTION_BANK),
             exits,
             # 50% chance that the room will include a weapon
-            weapon=generate_weapon() if random.randint(0, 1) == 1 else None
+            items=[generate_weapon()] if random.randint(0, 1) == 1 else None
         )
-
-    def get_options(self) -> Dict[str, Callable[[Player], Any]]:
-        """
-        Determines the special actions available, given the EmptyRoom's
-        current state.
-
-        In practice, this means that the options, if the room contains a
-        weapon, are:
-        1. Take the weapon
-        2. Leave the weapon on the floor
-        If the weapon has already been taken, or if there never was a weapon,
-        there are no special actions available.
-
-        Returns:
-            Dictionary mapping action descriptions to callback handlers.
-
-        """
-        if self.weapon is None:
-            return {}
-
-        def pick_up(player):
-            player.pick_up_item(self.weapon)
-            self.weapon = None
-
-        action_handler = {
-            f"Take the {self.weapon}": pick_up,
-            "Leave it alone": lambda player: None
-        }
-        return action_handler
 
 
 class MonsterRoom(Room):
@@ -314,7 +279,7 @@ class MonsterRoom(Room):
                 "Run back": lambda player: player.retreat()
             }
             return action_handler
-        return {}
+        return super().get_options()
 
 
 class TreasureRoom(Room):
@@ -364,7 +329,7 @@ class TreasureRoom(Room):
 
         """
         if self.chest.is_open:
-            return {}
+            return super().get_options()
 
         action_handler = {
             "Open the chest":
