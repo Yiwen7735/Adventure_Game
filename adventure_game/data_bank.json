@@ -9,7 +9,8 @@
     "a school classroom",
     "a wine cellar",
     "a penthouse suite with a magnificent view of a bustling city",
-    "a backstage room at a qipao contest"
+    "a backstage room at a qipao contest",
+    "a peaceful, misty forest with a sleeping Totoro"
   ],
   "enemies": [
     {
@@ -81,6 +82,11 @@
       "name": "boozy clown",
       "short_name": "clown",
       "hp": 20
+    },
+    {
+      "name": "sleeping totoro",
+      "short_name": "totoro",
+      "hp": 100
     }
   ],
   "weapon_types": [
@@ -326,6 +332,14 @@
     {
       "name": "peanuts",
       "hp": 5
+    },
+    {
+      "name": "suspicious mushroom",
+      "hp": -100
+    },
+    {
+      "name": "dry hot pot",
+      "hp": -30
     }
   ]
 }
