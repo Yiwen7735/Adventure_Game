@@ -28,6 +28,13 @@ class Player(Character):
         self.previous_room: Optional[Room] = None
         self.current_room: Optional[Room] = None
 
+    def __str__(self):
+        weapon = self.equipped['weapon']
+        outfit = self.equipped['outfit']
+        return f"{self.name}: hp {self.hp}, " \
+               f"holding {'Nothing' if weapon is None else weapon}, " \
+               f"wearing {'Nothing' if outfit is None else outfit}"
+
     def move_to(self, room: Room):
         """
         Moves the Player to the target Room.
