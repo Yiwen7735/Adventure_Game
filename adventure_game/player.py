@@ -2,7 +2,7 @@ from typing import cast, Dict, List, Optional
 
 from .character import Character
 from .compass import Direction
-from .item import EquipmentItem, Item
+from .item import EquipmentItem, FoodItem, Item
 from .outfit import Outfit
 from .room import Room
 from .weapon import Weapon, WeaponBrokenException
@@ -23,7 +23,8 @@ class Player(Character):
         }
         self.inventory: Dict[str, List[Item]] = {
             "weapon": [],
-            "outfit": []
+            "outfit": [],
+            "food": [],
         }
         self.previous_room: Optional[Room] = None
         self.current_room: Optional[Room] = None
@@ -51,6 +52,10 @@ class Player(Character):
     @property
     def outfits(self) -> List[Outfit]:
         return cast(List[Outfit], self.inventory["outfit"])
+
+    @property
+    def foods(self) -> List[FoodItem]:
+        return cast(List[FoodItem], self.inventory["food"])
 
     def __str__(self):
         weapon = self.cur_weapon
@@ -119,6 +124,8 @@ class Player(Character):
             self.weapons.append(item)
         elif isinstance(item, Outfit):
             self.outfits.append(item)
+        elif isinstance(item, FoodItem):
+            self.foods.append(item)
 
     def equip(self, key: str, option: int):
         """
@@ -165,6 +172,18 @@ class Player(Character):
         drop_item = self.inventory[key][option - 1]
         self.inventory[key].remove(drop_item)
         self.current_room.add_item(drop_item)
+
+    def eat(self, option: int):
+        """
+        Eats a piece of food from the inventory.
+
+        Args:
+            option: The option_th item in the food inventory list.
+
+        """
+        food = self.foods[option]
+        self.heal(food.restore_amount)
+        self.foods.remove(food)
 
     def attack(self, target: Character):
         """

@@ -2,6 +2,7 @@ class Character:
     def __init__(self, name: str, hp: int):
         self.name = name
         self.hp = hp
+        self.max_hp = hp
 
     def take_damage(self, points: int):
         """
@@ -12,6 +13,16 @@ class Character:
 
         """
         self.hp = max(0, self.hp - points)
+
+    def heal(self, points: int):
+        """
+        Heals the Character.
+
+        Args:
+            points: The amount of hp points to restore to the Character.
+
+        """
+        self.hp = min(self.hp + points, self.max_hp)
 
     def is_alive(self) -> bool:
         """

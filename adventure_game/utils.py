@@ -35,6 +35,16 @@ def show_inventory(player: Player):
             print_options(item_list)
 
 
+def eat(player: Player):
+    option = get_user_input("Which item do you want to eat? ", player)
+    if option is not None:
+        if option <= len(player.foods):
+            print(f"You ate the {player.foods[option - 1].name}")
+            player.eat(option - 1)
+        else:
+            print("You don't have that much food!")
+
+
 def equip(player: Player):
     option = get_user_input("Which item do you want to equip? "
                             "[e.g., w1: weapon #1, o2: outfit #2]",
@@ -82,6 +92,7 @@ GLOBAL_OPTIONS: Dict[str, Callable[[Player], Any]] = {
     'drop': drop,
     'throw': throw,
     'me': print,
+    'eat': eat,
 }
 
 
