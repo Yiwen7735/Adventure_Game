@@ -16,7 +16,7 @@ def run_game():
     # Move the player to the starting room
     player.move_to(generate_first_room())
 
-    while True:
+    while player.is_alive():
         messages.print_enter(player.current_room)
         options = player.current_room.get_options()
         if options:
@@ -31,12 +31,9 @@ def run_game():
             # Invoke the action handler for the selected option
             options[key](player)
 
-        if not player.is_alive():
-            game_over()
-
         exits = player.current_room.exits
         dest = None
-        while dest is None:
+        while dest is None and player.is_alive():
             print(
                 "There are portals to the "
                 f"{messages.list_to_comma_string(exits)}."
@@ -54,3 +51,5 @@ def run_game():
                 except NoSuchExitException:
                     print(f"There is no portal to the {dest}.")
                     dest = None
+
+    game_over()
