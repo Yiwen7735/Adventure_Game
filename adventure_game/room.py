@@ -9,11 +9,10 @@ import json
 import random
 from typing import Any, Callable, Dict, List, Optional, TYPE_CHECKING
 
-from . import compass, constants, item, enemy, messages
+from . import action, compass, constants, item, enemy, messages
 from .chest import Chest
 from .trap import Trap
 from .weapon import generate_weapon
-from . import action
 if TYPE_CHECKING:
     from .player import Player
 
@@ -44,6 +43,7 @@ class Room(abc.ABC):
     Args:
         description: A player-facing description of the room.
         exits: A list of the directions in which the player can travel.
+        items: An optional list of Items found in the room.
         trap: An optional hidden trap in the room.
 
     """
@@ -208,11 +208,17 @@ class EmptyRoom(Room):
             EmptyRoom
 
         """
+        items = []
+        if random.randint(0, 1) == 1:
+            # 50% chance that the room will include a weapon
+            items.append(generate_weapon())
+        if random.randint(0, 1) == 1:
+            # 50% chance that the room will include a piece of food
+            items.append(item.generate_food())
         return EmptyRoom(
             random.choice(DESCRIPTION_BANK),
             exits,
-            # 50% chance that the room will include a weapon
-            items=[generate_weapon()] if random.randint(0, 1) == 1 else None
+            items=items
         )
 
 

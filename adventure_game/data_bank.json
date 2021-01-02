@@ -293,5 +293,39 @@
         "Super": 0
       }
     }
+  ],
+  "food": [
+    {
+      "name": "small apple",
+      "hp": 5
+    },
+    {
+      "name": "fuji apple",
+      "hp": 15
+    },
+    {
+      "name": "mouldy pizza",
+      "hp": 5
+    },
+    {
+      "name": "spicy mapo doufu",
+      "hp": 15
+    },
+    {
+      "name": "filling mala tang",
+      "hp": 25
+    },
+    {
+      "name": "chocolate bar",
+      "hp": 5
+    },
+    {
+      "name": "chili chips",
+      "hp": 10
+    },
+    {
+      "name": "peanuts",
+      "hp": 5
+    }
   ]
 }

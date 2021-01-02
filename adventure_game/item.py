@@ -1,4 +1,8 @@
 import enum
+import json
+import random
+
+from . import constants
 
 
 class Item:
@@ -43,6 +47,19 @@ class FoodItem(Item):
     def __init__(self, name: str, restore_amount: int):
         super().__init__(name)
         self.restore_amount = restore_amount
+
+    def __str__(self):
+        return f'{self.name} [restores {self.restore_amount} hp]'
+
+
+with open(constants.DATA_BANK_FILE) as fh:
+    FOOD_BANK = json.load(fh)['food']
+
+
+def generate_food() -> FoodItem:
+    """Randomly generates a piece of food from the available options."""
+    presets = random.choice(FOOD_BANK)
+    return FoodItem(presets['name'], presets['hp'])
 
 
 class Rarity(enum.Enum):
