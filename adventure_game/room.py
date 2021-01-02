@@ -238,10 +238,11 @@ class MonsterRoom(Room):
         super().__init__(description, exits, trap=trap)
 
     def __str__(self):
-        return (
-            f'{self.description}, with '
-            f'{messages.get_a_or_an(self.monster.name)} {self.monster.name}'
-        )
+        desc = f'{self.description}, with '
+        if not self.monster.is_alive():
+            desc += 'the corpse of '
+        desc += f'{messages.get_a_or_an(self.monster.name)} {self.monster.name}'
+        return desc
 
     @staticmethod
     def generate(exits: List[compass.Direction]) -> MonsterRoom:
@@ -297,7 +298,13 @@ class TreasureRoom(Room):
         super().__init__(description, exits, trap=trap)
 
     def __str__(self):
-        return f'{self.description}. An enticing chest sits in the centre'
+        desc = f'{self.description}. '
+        if self.chest.is_open:
+            desc += 'An open, empty'
+        else:
+            desc += 'An enticing'
+        desc += ' sits in the centre'
+        return desc
 
     @staticmethod
     def generate(exits: List[compass.Direction]) -> TreasureRoom:
