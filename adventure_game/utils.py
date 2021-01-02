@@ -1,5 +1,7 @@
 from __future__ import annotations
-from typing import Iterable, Optional, Union, TYPE_CHECKING
+from typing import (
+    Any, Callable, Dict, Iterable, Optional, Union, TYPE_CHECKING
+)
 
 from . import compass
 if TYPE_CHECKING:
@@ -74,6 +76,15 @@ def drop(player: Player):
             print(f"No {item_type} found.")
 
 
+GLOBAL_OPTIONS: Dict[str, Callable[[Player], Any]] = {
+    'items': show_inventory,
+    'equip': equip,
+    'drop': drop,
+    'throw': throw,
+    'me': print,
+}
+
+
 def get_user_input(prompt: str, player: Player) -> Optional[Union[int, str]]:
     """
     Prompts the user for input, and handles generic actions.
@@ -95,24 +106,9 @@ def get_user_input(prompt: str, player: Player) -> Optional[Union[int, str]]:
     if not prompt.endswith(" "):
         prompt += " "
     option = input(prompt)
-    if option == 'items':
-        show_inventory(player)
-        return None
 
-    if option == 'equip':
-        equip(player)
-        return None
-
-    if option == 'drop':
-        drop(player)
-        return None
-
-    if option == 'throw':
-        throw(player)
-        return None
-
-    if option == 'me':
-        print(player)
+    if option in GLOBAL_OPTIONS:
+        GLOBAL_OPTIONS[option](player)
         return None
 
     try:
