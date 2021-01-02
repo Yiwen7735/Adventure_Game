@@ -137,3 +137,4 @@ def parse_movement_instr(instr: str) -> Optional[compass.Direction]:
             pass
     print("Expected an instruction in the form: go north")
     return None
+

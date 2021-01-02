@@ -26,9 +26,6 @@ def attack(player: Player, enemy: Enemy):
     """
     option = "a"
     while option != "f":
-        if not player.is_alive():
-            break
-
         if option == "a":
             try:
                 player.attack(enemy)
@@ -57,6 +54,8 @@ def attack(player: Player, enemy: Enemy):
                 f"hp stats: {player.name} {player.hp}, "
                 f"{enemy.short_name} {enemy.hp}"
             )
+            if not player.is_alive():
+                break
 
         message = "Press 'a' to continue attacking or 'f' to flee"
         if player.hp < 20:

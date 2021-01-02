@@ -1,10 +1,12 @@
 from . import messages, utils
 from .player import Player
 from .room import generate_first_room, NoSuchExitException
+import sys
 
 
 def game_over():
-    pass
+    print("You were relentlessly killed. RIP.")
+    sys.exit(0)
 
 
 def run_game():
@@ -28,6 +30,9 @@ def run_game():
             key = list(options.keys())[int(action_id) - 1]
             # Invoke the action handler for the selected option
             options[key](player)
+
+        if not player.is_alive():
+            game_over()
 
         exits = player.current_room.exits
         dest = None
