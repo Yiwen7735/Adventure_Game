@@ -44,8 +44,8 @@ def equip(player: Player):
         item_num = int(option[1])
         item_list = player.inventory[item_type]
         if item_num <= len(item_list):
-            player.equip(item_type, item_num)
             print(f"You equipped the {item_list[item_num - 1].name}")
+            player.equip(item_type, item_num)
         else:
             print(f"No {item_type} found.")
 
@@ -78,6 +78,9 @@ def get_user_input(prompt: str, player: Player) -> Optional[Union[int, str]]:
     if option == 'e':
         equip(player)
         return None
+
+    if option == 'me':
+        print(player)
 
     try:
         return int(option)

@@ -36,7 +36,7 @@ class ParseMovementTests(unittest.TestCase):
 class EquipTests(unittest.TestCase):
     def test_equip_nonexistent_items(self):
         player = Player("Tester", 100, None, None)
-        inputs = (i for i in ["w1", "o2"])
+        inputs = (i for i in ["w1", "o2", "o1"])
 
         def mock_input(*args):
             return next(inputs)
@@ -50,3 +50,6 @@ class EquipTests(unittest.TestCase):
             equip(player)
             self.assertIsNone(player.equipped["outfit"])
 
+            # The player could equip the item that exists
+            equip(player)
+            self.assertEqual(player.equipped["outfit"].name, "qipao");
