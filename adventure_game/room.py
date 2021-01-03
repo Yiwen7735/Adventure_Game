@@ -287,6 +287,8 @@ class MonsterRoom(Room):
             action_handler = {
                 f"Attack {self.monster.name}":
                     lambda player: action.attack(player, self.monster),
+                f"Attempt to sneak past the {self.monster.short_name}":
+                    lambda player: action.attempt_sneak(player, self.monster),
                 "Run back": action.retreat
             }
             return action_handler

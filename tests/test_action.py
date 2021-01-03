@@ -1,7 +1,7 @@
 import contextlib
 import io
 import unittest
-from unittest.mock import patch
+from unittest.mock import create_autospec, patch
 
 from adventure_game import action, enemy, item
 from adventure_game.chest import Chest
@@ -182,3 +182,30 @@ class ChestCollectTests(unittest.TestCase):
             len([i for v in player.inventory.values() for i in v]),
             2
         )
+
+
+class SneakTests(unittest.TestCase):
+    def test_failed_attempt_starts_fight(self):
+        player = Player("Tester", 100)
+        monster = enemy.Enemy(
+            "monster", "monster", 20,
+            Weapon("sword", 1, item.Rarity.Crappy, 5, 5)
+        )
+
+        attack_mock = create_autospec(action.attack)
+        with patch('adventure_game.action.attack', attack_mock):
+            action.attempt_sneak(player, monster)
+            attack_mock.assert_called()
+
+    def test_successful_attempt_avoids_fight(self):
+        player = Player("Tester", 100)
+        monster = enemy.Enemy(
+            "monster", "monster", 20,
+            Weapon("sword", 1, item.Rarity.Crappy, 5, 5)
+        )
+
+        attack_mock = create_autospec(action.attack)
+        with patch('adventure_game.action.random.randint', lambda a, b: -1):
+            with patch('adventure_game.action.attack', attack_mock):
+                action.attempt_sneak(player, monster)
+                attack_mock.assert_not_called()

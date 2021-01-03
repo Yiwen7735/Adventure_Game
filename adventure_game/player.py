@@ -1,5 +1,6 @@
 from typing import cast, Dict, List, Optional
 
+from . import constants
 from .character import Character
 from .compass import Direction
 from .item import EquipmentItem, FoodItem, Item
@@ -215,8 +216,8 @@ class Player(Character):
             Total number of luck points added from equipped weapon & outfit
 
         """
-        return sum([item.luck_stat for item in list(self.equipped.values())
-                    if item is not None])
-
-
-
+        return min(
+            constants.MAX_LUCK,
+            sum([item.luck_stat for item in list(self.equipped.values())
+                 if item is not None])
+        )

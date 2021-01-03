@@ -1,7 +1,8 @@
 from __future__ import annotations
+import random
 from typing import List, TYPE_CHECKING
 
-from . import item, messages
+from . import constants, item, messages
 from .chest import Chest
 from .enemy import Enemy
 from .utils import print_options, get_user_input
@@ -139,3 +140,23 @@ def retreat(player: Player):
     """
     messages.print_enter(player.previous_room)
     player.retreat()
+
+
+def attempt_sneak(player: Player, enemy: Enemy):
+    """
+    The Player attempts to sneak past an enemy.
+
+    Success of the sneak attempt is determine by the player's luck statistic
+    and a random element. If the attempt fails, a fight begins.
+
+    """
+    # If the player has the maximum luck value, there is a small chance
+    # that their attempt will fail
+    threshold = random.randint(0, constants.MAX_LUCK + 5)
+    if player.get_luck() > threshold:
+        # Success!
+        print(f"You managed to slide past the {enemy.short_name} undetected!")
+    else:
+        # Failure...
+        print("Oops... that didn't go to plan.")
+        attack(player, enemy)

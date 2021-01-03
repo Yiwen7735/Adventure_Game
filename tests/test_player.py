@@ -1,5 +1,6 @@
 import unittest
 
+from adventure_game.constants import MAX_LUCK
 from adventure_game.compass import Direction
 from adventure_game.enemy import Enemy
 from adventure_game.item import Rarity
@@ -138,27 +139,23 @@ class PlayerTests(unittest.TestCase):
     def test_luck(self):
         weapon = Weapon("sword", 1, Rarity.Common, 5, 5)
         outfit = Outfit("beautiful dress", 10, Rarity.Super, 15)
-        player = Player(
-            "Tester",
-            100,
-            weapon,
-            outfit
-        )
+        player = Player("Tester", 100, weapon, outfit)
         self.assertEqual(player.get_luck(), weapon.luck_stat + outfit.luck_stat)
 
     def test_luck_no_equipped_items(self):
-        player = Player("Tester", 100, None, None)
+        player = Player("Tester", 100)
         self.assertEqual(player.get_luck(), 0)
+
+    def test_luck_greater_than_max(self):
+        weapon = Weapon("sword", MAX_LUCK + 1, Rarity.Common, 5, 5)
+        outfit = Outfit("beautiful dress", MAX_LUCK + 10, Rarity.Super, 15)
+        player = Player("Tester", 100, weapon, outfit)
+        self.assertEqual(player.get_luck(), MAX_LUCK)
 
     def test_attack_enemy(self):
         weapon = Weapon("sword", 5, Rarity.Common, 5, 5)
         outfit = Outfit("qipao", 10, Rarity.Super, 5)
-        player = Player(
-            "Tester",
-            100,
-            weapon,
-            outfit
-        )
+        player = Player("Tester", 100, weapon, outfit)
         enemy = Enemy(
             "beast", "beast", 10, Weapon("axe", 0, Rarity.Crappy, 5, 10)
         )
@@ -176,12 +173,7 @@ class PlayerTests(unittest.TestCase):
     def test_attack_enemy_broken_weapon(self):
         weapon = Weapon("sword", 5, Rarity.Common, 5, 1)
         outfit = Outfit("qipao", 10, Rarity.Super, 5)
-        player = Player(
-            "Tester",
-            100,
-            weapon,
-            outfit
-        )
+        player = Player("Tester", 100, weapon, outfit)
         enemy = Enemy(
             "beast", "best", 10, Weapon("axe", 0, Rarity.Crappy, 5, 10)
         )
