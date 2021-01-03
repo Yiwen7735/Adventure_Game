@@ -96,7 +96,15 @@ def take_loop(player: Player, items: List[item.Item]):
             elif args[0] == 'none':
                 break
             else:
-                treasure = items[int(args[0]) - 1]
+                try:
+                    item_num = int(args[0])
+                except ValueError:
+                    print("take must be followed by a number")
+                    continue
+                if item_num > len(items) or item_num <= 0:
+                    print(f"Invalid item number: {item_num}")
+                    continue
+                treasure = items[item_num - 1]
                 print(f"You picked up {treasure.name}!")
                 player.pick_up_item(treasure)
                 items.remove(treasure)

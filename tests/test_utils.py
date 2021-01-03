@@ -1,11 +1,12 @@
 import unittest
-from unittest.mock import patch
 
 from adventure_game import item, room
 from adventure_game.compass import Direction
 from adventure_game.outfit import Outfit
 from adventure_game.player import Player
-from adventure_game.utils import drop, equip, parse_movement_instr, throw
+from adventure_game.utils import (
+    drop, equip, parse_movement_instr, throw, InvalidInstruction
+)
 from adventure_game.weapon import Weapon
 
 
@@ -28,10 +29,12 @@ class ParseMovementTests(unittest.TestCase):
                 )
 
     def test_parse_no_go(self):
-        self.assertIsNone(parse_movement_instr('move', 'north'))
+        with self.assertRaises(InvalidInstruction):
+            parse_movement_instr('move', 'north')
 
     def test_parse_direction_typo(self):
-        self.assertIsNone(parse_movement_instr('go', 'nrth'))
+        with self.assertRaises(InvalidInstruction):
+            parse_movement_instr('go', 'nrth')
 
 
 class EquipTests(unittest.TestCase):

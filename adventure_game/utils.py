@@ -8,6 +8,10 @@ if TYPE_CHECKING:
     from .player import Player
 
 
+class InvalidInstruction(Exception):
+    pass
+
+
 def print_options(options: Iterable[Any]):
     """
     Prints the options, numbered 1 to len(options).
@@ -36,7 +40,11 @@ def show_inventory(player: Player, *args):
 
 
 def eat(player: Player, *args):
-    option = int(args[0])
+    try:
+        option = int(args[0])
+    except ValueError:
+        print("eat must be followed by a number")
+        return
     if option <= len(player.foods):
         food = player.foods[option - 1]
         print(f"You ate the {food.name}. {food.consume_msg}.")
@@ -52,8 +60,17 @@ def eat(player: Player, *args):
 def equip(player: Player, *args):
     # TODO: should expand it for all options?
     option_dict = {"w": "weapon", "o": "outfit"}
-    item_type = option_dict[args[0][0]]
-    item_num = int(args[0][1])
+    arg = args[0]
+    try:
+        item_type = option_dict[arg[0]]
+    except KeyError:
+        print("equip must be followed by w/o")
+        return
+    try:
+        item_num = int(arg[1])
+    except ValueError:
+        print(f"{item_type} must be followed by a number, e.g. w1")
+        return
     item_list = player.inventory[item_type]
     if item_num <= len(item_list):
         print(f"You equipped the {item_list[item_num - 1].name}")
@@ -72,8 +89,17 @@ def throw(player: Player, *args):
 
 def drop(player: Player, *args):
     option_dict = {"w": "weapon", "o": "outfit"}
-    item_type = option_dict[args[0][0]]
-    item_num = int(args[0][1])
+    arg = args[0]
+    try:
+        item_type = option_dict[arg[0]]
+    except KeyError:
+        print("equip must be followed by w/o")
+        return
+    try:
+        item_num = int(arg[1])
+    except ValueError:
+        print(f"{item_type} must be followed by a number, e.g. w1")
+        return
     item_list = player.inventory[item_type]
     if item_num <= len(item_list):
         print(f"You dropped the {item_list[item_num - 1].name}")
@@ -157,6 +183,5 @@ def parse_movement_instr(
             return compass.Direction[dest.capitalize()]
         except KeyError:
             # Continue to report invalid instruction
-            pass
-    print("Expected an instruction in the form: go north")
-    return None
+            raise InvalidInstruction(f"{dest} is not a valid direction")
+    raise InvalidInstruction("Expected an instruction in the form: go north")

@@ -20,19 +20,26 @@ def run_game():
         messages.print_enter(player.current_room)
         options = player.current_room.get_options()
         if options:
-            action_id = None
-            while action_id is None:
+            while True:
                 messages.print_options(options)
-                action_id, _ = utils.get_user_instr(
+                inputs = utils.get_user_instr(
                     "What would you like to do?",
                     player
                 )
-            # Invoke the action handler for the selected option
-            options[action_id].handler(player)
+                if inputs is None:
+                    # Global option handled in get_user_instr
+                    continue
+                action_id = inputs[0]
+                # Invoke the action handler for the selected option
+                try:
+                    options[action_id].handler(player)
+                except KeyError:
+                    print(f"Invalid instruction: {action_id}")
+                else:
+                    break
 
         exits = player.current_room.exits
-        dest = None
-        while dest is None and player.is_alive():
+        while player.is_alive():
             print(
                 "There are portals to the "
                 f"{messages.list_to_comma_string(exits)}."
@@ -44,12 +51,21 @@ def run_game():
             if instr is None:
                 continue
             instr, args = instr
-            dest = utils.parse_movement_instr(instr, args[0])
-            if dest is not None:
-                try:
-                    player.go(dest)
-                except NoSuchExitException:
-                    print(f"There is no portal to the {dest}.")
-                    dest = None
+            if not args:
+                print("Expected an instruction in the form: go north")
+                continue
+
+            try:
+                dest = utils.parse_movement_instr(instr, args[0])
+            except utils.InvalidInstruction as e:
+                print(e)
+                continue
+
+            try:
+                player.go(dest)
+            except NoSuchExitException:
+                print(f"There is no portal to the {dest}.")
+            else:
+                break
 
     game_over()
