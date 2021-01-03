@@ -1,7 +1,8 @@
-from . import messages, utils
+import sys
+
+from . import action, messages, utils
 from .player import Player
 from .room import generate_first_room, NoSuchExitException
-import sys
 
 
 def game_over():
@@ -18,6 +19,8 @@ def run_game():
 
     while player.is_alive():
         messages.print_enter(player.current_room)
+        if player.current_room.trap is not None:
+            action.trigger_trap(player, player.current_room.trap)
         options = player.current_room.get_options()
         if options:
             while True:

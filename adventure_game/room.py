@@ -12,7 +12,7 @@ from typing import Dict, List, Optional
 from . import action, compass, constants, item, enemy, messages
 from .action_handler import ActionHandler
 from .chest import Chest
-from .trap import Trap
+from .trap import Trap, generate_trap
 from .weapon import generate_weapon
 
 # Populate a set of descriptions from the predefined JSON
@@ -222,7 +222,8 @@ class EmptyRoom(Room):
         return EmptyRoom(
             random.choice(DESCRIPTION_BANK),
             exits,
-            items=items
+            items=items,
+            trap=generate_trap() if random.randint(0, 3) == 0 else None
         )
 
 

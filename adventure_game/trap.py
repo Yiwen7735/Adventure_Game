@@ -12,6 +12,7 @@ class Trap:
         self.name = name
         self.description = description
         self.damage = damage
+        self.triggered = False
 
 
 with open(constants.DATA_BANK_FILE) as fh:

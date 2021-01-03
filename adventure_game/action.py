@@ -194,6 +194,8 @@ def trigger_trap(player: Player, trap: Trap):
     and a random element. Once triggered, the trap will cause damage to player.
 
     """
+    if trap.triggered:
+        return
     threshold = random.randint(0, constants.MAX_LUCK)
     if player.get_luck() >= threshold:
         # Safe!
@@ -202,3 +204,4 @@ def trigger_trap(player: Player, trap: Trap):
         # Trap is triggered
         print(f"Oops...{trap.description}")
         player.take_damage(trap.damage)
+        trap.triggered = True
