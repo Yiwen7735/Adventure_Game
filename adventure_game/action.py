@@ -206,6 +206,6 @@ def trigger_trap(player: Player, trap: Trap):
         print("Phew...trap wasn't triggered")
     else:
         # Trap is triggered
-        print(f"Oops...{trap.description}")
+        print(f"Oops...{trap.description}. You lost {trap.damage} hp.")
         player.take_damage(trap.damage)
         trap.triggered = True
