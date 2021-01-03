@@ -3,6 +3,7 @@ from typing import cast, Dict, List, Optional
 from . import constants
 from .character import Character
 from .compass import Direction
+from .exceptions import InventoryFullException
 from .item import EquipmentItem, FoodItem, Item
 from .outfit import Outfit
 from .room import Room
@@ -122,11 +123,20 @@ class Player(Character):
 
         """
         if isinstance(item, Weapon):
-            self.weapons.append(item)
+            if len(self.weapons) < constants.MAX_WEAPON:
+                self.weapons.append(item)
+            else:
+                raise InventoryFullException("Your weapon pocket is full.")
         elif isinstance(item, Outfit):
-            self.outfits.append(item)
+            if len(self.outfits) < constants.MAX_OUTFIT:
+                self.outfits.append(item)
+            else:
+                raise InventoryFullException("Your outfit pocket is full.")
         elif isinstance(item, FoodItem):
-            self.foods.append(item)
+            if len(self.foods) < constants.MAX_FOOD:
+                self.foods.append(item)
+            else:
+                raise InventoryFullException("Your food pocket is full.")
 
     def equip(self, key: str, option: int):
         """

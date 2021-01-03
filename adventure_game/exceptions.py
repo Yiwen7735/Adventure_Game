@@ -1,0 +1,2 @@
+class InventoryFullException(Exception):
+    pass

@@ -3,13 +3,14 @@ import unittest
 from adventure_game.constants import MAX_LUCK
 from adventure_game.compass import Direction
 from adventure_game.enemy import Enemy
+from adventure_game.exceptions import InventoryFullException
 from adventure_game.item import Rarity
 from adventure_game.outfit import Outfit
 from adventure_game.player import Player
 from adventure_game.room import (
     generate_first_room, EmptyRoom, NoSuchExitException
 )
-from adventure_game.weapon import Weapon, WeaponBrokenException
+from adventure_game.weapon import Weapon, generate_weapon, WeaponBrokenException
 
 
 class PlayerTests(unittest.TestCase):
@@ -35,6 +36,17 @@ class PlayerTests(unittest.TestCase):
         player.pick_up_item(outfit)
         self.assertTrue(weapon in player.weapons)
         self.assertTrue(outfit in player.outfits)
+
+    def test_pick_up_item_with_full_pocket(self):
+        player = Player("Tester", 100, None, None)
+        for i in range(10):
+            player.pick_up_item(generate_weapon())
+
+        # After reaching 10, the player is not allowed to pick another weapon
+        weapon = generate_weapon()
+        with self.assertRaises(InventoryFullException):
+            player.pick_up_item(weapon)
+        self.assertFalse(weapon in player.weapons)
 
     def test_change_weapon(self):
         starting_weapon = Weapon("sword", 1, Rarity.Crappy, 5, 5)
