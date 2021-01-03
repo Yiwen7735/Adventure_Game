@@ -87,6 +87,6 @@ class MonsterRoomTests(unittest.TestCase):
 
         f = StringIO()
         with contextlib.redirect_stdout(f):
-            options['Run back'](player)
+            options['run'].handler(player)
 
         self.assertIn(str(first_room), f.getvalue())

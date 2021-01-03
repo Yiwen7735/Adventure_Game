@@ -22,14 +22,13 @@ def run_game():
         if options:
             action_id = None
             while action_id is None:
-                utils.print_options(options.keys())
+                messages.print_options(options)
                 action_id = utils.get_user_input(
-                    "Which action would you like to do?",
+                    "What would you like to do?",
                     player
                 )
-            key = list(options.keys())[int(action_id) - 1]
             # Invoke the action handler for the selected option
-            options[key](player)
+            options[action_id].handler(player)
 
         exits = player.current_room.exits
         dest = None

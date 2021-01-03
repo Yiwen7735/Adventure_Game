@@ -7,14 +7,13 @@ from __future__ import annotations
 import abc
 import json
 import random
-from typing import Any, Callable, Dict, List, Optional, TYPE_CHECKING
+from typing import Dict, List, Optional
 
 from . import action, compass, constants, item, enemy, messages
+from .action_handler import ActionHandler
 from .chest import Chest
 from .trap import Trap
 from .weapon import generate_weapon
-if TYPE_CHECKING:
-    from .player import Player
 
 # Populate a set of descriptions from the predefined JSON
 # These descriptions are used when dynamically generating new rooms
@@ -93,7 +92,7 @@ class Room(abc.ABC):
         """Adds a new item to the floor of the room."""
         self.items.append(new_item)
 
-    def get_options(self) -> Dict[str, Callable[[Player], Any]]:
+    def get_options(self) -> Dict[str, ActionHandler]:
         """
         Returns a map of the available special actions for the room, along
         with a callback handler to implement the action.
@@ -106,9 +105,14 @@ class Room(abc.ABC):
         """
         options = {}
         if self.items:
-            options['Look at items on the floor'] = \
+            options['look'] = ActionHandler(
+                'Look at items on the floor',
                 lambda player: action.take_loop(player, self.items)
-            options['Ignore floor-based garbage'] = lambda _: None
+            )
+            options['ignore'] = ActionHandler(
+                'Ignore floor-based garbage',
+                lambda _: None
+            )
 
         return options
 
@@ -268,7 +272,7 @@ class MonsterRoom(Room):
             enemy.generate_enemy()
         )
 
-    def get_options(self) -> Dict[str, Callable[[Player], Any]]:
+    def get_options(self) -> Dict[str, ActionHandler]:
         """
         Determines the special actions available, given the MonsterRoom's
         current state.
@@ -284,14 +288,21 @@ class MonsterRoom(Room):
 
         """
         if self.monster.is_alive():
-            action_handler = {
-                f"Attack {self.monster.name}":
-                    lambda player: action.attack(player, self.monster),
-                f"Attempt to sneak past the {self.monster.short_name}":
-                    lambda player: action.attempt_sneak(player, self.monster),
-                "Run back": action.retreat
+            action_handlers = {
+                'attack': ActionHandler(
+                    f'Attack {self.monster.name}',
+                    lambda player: action.attack(player, self.monster)
+                ),
+                'sneak': ActionHandler(
+                    f'Attempt to sneak past the {self.monster.short_name}',
+                    lambda player: action.attempt_sneak(player, self.monster)
+                ),
+                'run': ActionHandler(
+                    'Run back',
+                    action.retreat
+                ),
             }
-            return action_handler
+            return action_handlers
         return super().get_options()
 
 
@@ -331,7 +342,7 @@ class TreasureRoom(Room):
             exits
         )
 
-    def get_options(self) -> Dict[str, Callable[[Player], Any]]:
+    def get_options(self) -> Dict[str, ActionHandler]:
         """
         Determines the special actions available, given the TreasureRoom's
         current state.
@@ -350,12 +361,18 @@ class TreasureRoom(Room):
         if self.chest.is_open:
             return super().get_options()
 
-        action_handler = {
-            "Open the chest":
-                lambda player: action.collect(player, self.chest),
-            "Leave it alone": lambda player: None
+        action_handlers = {
+            'open': ActionHandler(
+                'Open the chest',
+                lambda player: action.collect(player, self.chest)
+            ),
+            'leave': ActionHandler(
+                'Leave it alone',
+                lambda _: None
+            ),
         }
-        return action_handler
+
+        return action_handlers
 
 
 def _generate_room(enter_from: Optional[compass.Direction] = None) -> Room:

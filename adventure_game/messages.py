@@ -1,5 +1,6 @@
-from typing import Any, List
+from typing import Any, Dict, List
 
+from .action_handler import ActionHandler
 from .room import Room
 
 
@@ -41,3 +42,15 @@ def list_to_comma_string(options: List[Any]) -> str:
 def print_enter(room: Room):
     """Prints a message indicating the entered room."""
     print(f"You enter {room}.")
+
+
+def print_options(options: Dict[str, ActionHandler]):
+    """
+    Prints the option descriptions, with the instruction keyword underlined
+    if present.
+
+    """
+    for option, (desc, _) in options.items():
+        if option in desc or (option := option.capitalize()) in desc:
+            desc = desc.replace(option, f'\033[4m{option}\033[0m')
+        print(desc)
