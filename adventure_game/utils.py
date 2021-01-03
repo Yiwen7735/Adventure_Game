@@ -57,28 +57,6 @@ def eat(player: Player, *args):
         print("You don't have that much food!")
 
 
-def equip(player: Player, *args):
-    # TODO: should expand it for all options?
-    option_dict = {"w": "weapon", "o": "outfit"}
-    arg = args[0]
-    try:
-        item_type = option_dict[arg[0]]
-    except KeyError:
-        print("equip must be followed by w/o")
-        return
-    try:
-        item_num = int(arg[1])
-    except ValueError:
-        print(f"{item_type} must be followed by a number, e.g. w1")
-        return
-    item_list = player.inventory[item_type]
-    if item_num <= len(item_list):
-        print(f"You equipped the {item_list[item_num - 1].name}")
-        player.equip(item_type, item_num)
-    else:
-        print(f"No {item_type} found.")
-
-
 def throw(player: Player, *args):
     if player.cur_weapon is not None:
         print(f"You just threw away your {player.cur_weapon}")
@@ -87,25 +65,37 @@ def throw(player: Player, *args):
         print("You are not holding any weapon right now")
 
 
-def drop(player: Player, *args):
-    option_dict = {"w": "weapon", "o": "outfit"}
-    arg = args[0]
+def parse_item_spec(spec: str) -> Tuple:
+    spec_dict = {"w": "weapon", "o": "outfit"}
     try:
-        item_type = option_dict[arg[0]]
+        key = spec_dict[spec[0]]
     except KeyError:
         print("equip must be followed by w/o")
-        return
+        return ()
     try:
-        item_num = int(arg[1])
+        value = int(spec[1])
     except ValueError:
-        print(f"{item_type} must be followed by a number, e.g. w1")
-        return
-    item_list = player.inventory[item_type]
-    if item_num <= len(item_list):
-        print(f"You dropped the {item_list[item_num - 1].name}")
-        player.drop(item_type, item_num)
+        print(f"{key} must be followed by a number, e.g. w1")
+        return ()
+    return key, value
+
+
+def equip(player: Player, *args):
+    ikey, ival = parse_item_spec(args[0])
+    if ival <= len(player.inventory[ikey]):
+        print(f"You equipped the {player.inventory[ikey][ival - 1].name}")
+        player.equip(ikey, ival)
     else:
-        print(f"No {item_type} found.")
+        print(f"You don't have {ikey} #{ival} yet")
+
+
+def drop(player: Player, *args):
+    ikey, ival = parse_item_spec(args[0])
+    if ival <= len(player.inventory[ikey]):
+        print(f"You dropped the {player.inventory[ikey][ival - 1].name}")
+        player.drop(ikey, ival)
+    else:
+        print(f"You don't have {ikey} #{ival} yet")
 
 
 GLOBAL_OPTIONS: Dict[str, Callable[[Player, ...], Any]] = {
