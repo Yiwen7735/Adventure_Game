@@ -29,7 +29,10 @@ class Enemy(Character):
 
         """
         if target.is_alive():
-            target.take_damage(self.weapon.attack_strength)
+            damage = self.weapon.attack_strength
+            if target.cur_outfit is not None:
+                damage = max(0, damage - target.cur_outfit.defence)
+            target.take_damage(damage)
 
 
 def generate_enemy() -> Enemy:
