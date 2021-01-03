@@ -5,6 +5,7 @@ from typing import List, TYPE_CHECKING
 from . import constants, item, messages
 from .chest import Chest
 from .enemy import Enemy
+from .exceptions import InventoryFullException
 from .trap import Trap
 from .utils import print_options, get_user_instr
 from .weapon import WeaponBrokenException
@@ -89,10 +90,16 @@ def take_loop(player: Player, items: List[item.Item]):
         option, args = options
         if option == 'take':
             if args[0] == 'all':
-                for treasure in items:
-                    print(f"You picked up {treasure.name}!")
-                    player.pick_up_item(treasure)
-                items.clear()
+                # don't want to affect loop by removing treasure from items
+                for treasure in list(items):
+                    try:
+                        player.pick_up_item(treasure)
+                        print(f"You picked up {treasure.name}!")
+                    except InventoryFullException as e:
+                        print(e)
+                    else:
+                        items.remove(treasure)
+
             elif args[0] == 'none':
                 break
             else:
@@ -105,9 +112,13 @@ def take_loop(player: Player, items: List[item.Item]):
                     print(f"Invalid item number: {item_num}")
                     continue
                 treasure = items[item_num - 1]
-                print(f"You picked up {treasure.name}!")
-                player.pick_up_item(treasure)
-                items.remove(treasure)
+                try:
+                    player.pick_up_item(treasure)
+                    print(f"You picked up {treasure.name}!")
+                except InventoryFullException as e:
+                    print(e)
+                else:
+                    items.remove(treasure)
 
         if len(items) > 0:
             take_again = None
