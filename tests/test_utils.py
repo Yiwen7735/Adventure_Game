@@ -46,7 +46,6 @@ class EquipTests(unittest.TestCase):
         player.pick_up_item(Outfit("qipao", 0, item.Rarity.Super, 5))
         equip(player, "o2")
         self.assertIsNone(player.cur_outfit)
-
         # The player could equip the item that exists
         equip(player, "o1")
         self.assertEqual(player.cur_outfit.name, "qipao")

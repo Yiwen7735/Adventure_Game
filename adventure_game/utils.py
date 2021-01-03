@@ -65,23 +65,29 @@ def throw(player: Player, *args):
         print("You are not holding any weapon right now")
 
 
-def parse_item_spec(spec: str) -> Tuple:
+def parse_item_spec(*args) -> Tuple:
     spec_dict = {"w": "weapon", "o": "outfit"}
     try:
-        key = spec_dict[spec[0]]
+        key = spec_dict[args[0][0]]
+    except IndexError:
+        print("command must be followed by item specification")
+        return ()
     except KeyError:
-        print("equip must be followed by w/o")
+        print("item specification must start with w/o")
         return ()
     try:
-        value = int(spec[1])
+        value = int(args[0][1])
     except ValueError:
-        print(f"{key} must be followed by a number, e.g. w1")
+        print(f"{key} must be followed by an integer, e.g. w1")
         return ()
     return key, value
 
 
 def equip(player: Player, *args):
-    ikey, ival = parse_item_spec(args[0])
+    item = parse_item_spec(*args)
+    if not item:
+        return
+    ikey, ival = item
     if ival <= len(player.inventory[ikey]):
         print(f"You equipped the {player.inventory[ikey][ival - 1].name}")
         player.equip(ikey, ival)
@@ -90,7 +96,10 @@ def equip(player: Player, *args):
 
 
 def drop(player: Player, *args):
-    ikey, ival = parse_item_spec(args[0])
+    item = parse_item_spec(*args)
+    if not item:
+        return
+    ikey, ival = item
     if ival <= len(player.inventory[ikey]):
         print(f"You dropped the {player.inventory[ikey][ival - 1].name}")
         player.drop(ikey, ival)
