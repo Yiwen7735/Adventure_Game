@@ -39,7 +39,7 @@ class ParseMovementTests(unittest.TestCase):
 
 class EquipTests(unittest.TestCase):
     def test_equip_nonexistent_items(self):
-        player = Player("Tester", 100, None, None)
+        player = Player("Tester", 100)
         equip(player, "w1")
         # The player should not be able to equip non-existent items
         self.assertIsNone(player.cur_weapon)
@@ -49,6 +49,18 @@ class EquipTests(unittest.TestCase):
         # The player could equip the item that exists
         equip(player, "o1")
         self.assertEqual(player.cur_outfit.name, "qipao")
+
+    def test_equip_no_item(self):
+        player = Player("Tester", 100)
+        equip(player)
+        self.assertIsNone(player.cur_weapon)
+        self.assertIsNone(player.cur_outfit)
+
+    def test_equip_no_such_item_type(self):
+        player = Player("Tester", 100)
+        equip(player, "t1")
+        self.assertIsNone(player.cur_weapon)
+        self.assertIsNone(player.cur_outfit)
 
 
 class ThrowTests(unittest.TestCase):
@@ -61,6 +73,10 @@ class ThrowTests(unittest.TestCase):
         self.assertIsNone(player.cur_weapon)
         self.assertFalse(weapon in player.weapons)
         self.assertIn(weapon, first_room.items)
+
+    def test_throw_no_weapon_equipped(self):
+        player = Player("Tester", 100)
+        throw(player)
 
 
 class DropTests(unittest.TestCase):
@@ -87,3 +103,11 @@ class DropTests(unittest.TestCase):
         # The equipped items are still none
         self.assertIsNone(player.cur_weapon)
         self.assertIsNone(player.cur_outfit)
+
+    def test_drop_no_item(self):
+        player = Player("Tester", 100)
+        drop(player)
+
+    def test_drop_no_such_item_type(self):
+        player = Player("Tester", 100)
+        drop(player, "t1")
