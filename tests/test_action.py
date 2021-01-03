@@ -222,7 +222,7 @@ class TriggerTrapTests(unittest.TestCase):
         self.assertEqual(player.hp, 90)
 
         # With a luck stat of 30 (> MAX_LUCK), the player is immune to trap
-        weapon = Weapon("tester", 30, item.Rarity.Super, 20, 20)
+        weapon = Weapon("tester", 26, item.Rarity.Super, 20, 20)
         player.pick_up_item(weapon)
         player.change_item("weapon", weapon)
         action.trigger_trap(player, trap)
