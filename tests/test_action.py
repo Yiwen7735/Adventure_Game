@@ -8,6 +8,7 @@ from adventure_game.chest import Chest
 from adventure_game.compass import Direction
 from adventure_game.player import Player
 from adventure_game.room import EmptyRoom, MonsterRoom
+from adventure_game.trap import Trap
 from adventure_game.weapon import Weapon
 
 
@@ -209,3 +210,21 @@ class SneakTests(unittest.TestCase):
             with patch('adventure_game.action.attack', attack_mock):
                 action.attempt_sneak(player, monster)
                 attack_mock.assert_not_called()
+
+
+class TriggerTrapTests(unittest.TestCase):
+    def test_trigger_trap(self):
+        player = Player("tester", 100, None, None)
+        trap = Trap("maze", "you were stuck in a maze", 10)
+
+        # Without any luck stats, the trap is triggered all the time
+        action.trigger_trap(player, trap)
+        self.assertEqual(player.hp, 90)
+
+        # With a luck stat of 30 (> MAX_LUCK), the player is immune to trap
+        weapon = Weapon("tester", 30, item.Rarity.Super, 20, 20)
+        player.pick_up_item(weapon)
+        player.change_item("weapon", weapon)
+        action.trigger_trap(player, trap)
+        self.assertEqual(player.hp, 90)
+

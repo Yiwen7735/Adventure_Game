@@ -197,7 +197,7 @@ class Player(Character):
             WeaponBrokenException
 
         """
-        if self.equipped["weapon"] is None:
+        if self.cur_weapon is None:
             damage = 1
         else:
             if self.cur_weapon.is_broken():

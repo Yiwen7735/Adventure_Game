@@ -351,5 +351,17 @@
       "hp": -30,
       "msg": "you can feel the diarrhea is coming.."
     }
+  ],
+  "trap": [
+    {
+      "name": "trap door",
+      "description": "you fell into a pit aaahhhh",
+      "damage": 3
+    },
+    {
+      "name": "maze",
+      "description": "you were stuck in a maze",
+      "damage": 10
+    }
   ]
 }

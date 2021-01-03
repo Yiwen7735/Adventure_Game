@@ -5,6 +5,7 @@ from typing import List, TYPE_CHECKING
 from . import constants, item, messages
 from .chest import Chest
 from .enemy import Enemy
+from .trap import Trap
 from .utils import print_options, get_user_instr
 from .weapon import WeaponBrokenException
 if TYPE_CHECKING:
@@ -164,3 +165,21 @@ def attempt_sneak(player: Player, enemy: Enemy):
         # Failure...
         print("Oops... that didn't go to plan.")
         attack(player, enemy)
+
+
+def trigger_trap(player: Player, trap: Trap):
+    """
+    The player triggers the trap in room
+
+    Whether the trap gets triggered is determine by the player's luck statistic
+    and a random element. Once triggered, the trap will cause damage to player.
+
+    """
+    threshold = random.randint(0, constants.MAX_LUCK)
+    if player.get_luck() >= threshold:
+        # Safe!
+        print("Phew...trap wasn't triggered")
+    else:
+        # Trap is triggered
+        print(f"Oops...{trap.description}")
+        player.take_damage(trap.damage)
