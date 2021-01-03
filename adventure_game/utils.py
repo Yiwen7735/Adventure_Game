@@ -1,6 +1,6 @@
 from __future__ import annotations
 from typing import (
-    Any, Callable, Dict, Iterable, List, Optional, Union, TYPE_CHECKING
+    Any, Callable, Dict, Iterable, List, Optional, Tuple, TYPE_CHECKING
 )
 
 from . import compass
@@ -92,53 +92,69 @@ GLOBAL_OPTIONS: Dict[str, Callable[[Player, ...], Any]] = {
 }
 
 
-def get_user_input(prompt: str, player: Player) -> Optional[Union[int, str]]:
+def prompt_player(prompt: str, player: Player) -> Optional[str]:
+    if not prompt.endswith(" "):
+        prompt += " "
+    instr = input(prompt)
+    strings = instr.split(' ')
+    option, args = strings[0], strings[1:]
+
+    if option in GLOBAL_OPTIONS:
+        GLOBAL_OPTIONS[option](player, *args)
+        return None
+
+    return instr
+
+
+def get_user_int(prompt: str, player: Player) -> Optional[int]:
+    inputs = prompt_player(prompt, player)
+    if inputs is None:
+        return None
+
+    return int(inputs)
+
+
+def get_user_instr(
+        prompt: str, player: Player
+) -> Optional[Tuple[str, List[str]]]:
     """
     Prompts the user for input, and handles generic actions.
-
-    The following inputs are handled specially:
-      - i: Print the player's inventory
-      - e: Equip an item (weapon/outfit)
-    If the input is not one of these characters, it is cast to an integer
-    and returned for the caller to handle.
 
     Args:
         prompt: The message with which to prompt the user for input.
         player: The Player instance associated with the current user.
 
     Returns:
-        None, if the input is handled here, int otherwise.
+        None, if the input is a handled global option, otherwise a tuple
+        containing the instruction command and a list of extra options.
 
     """
-    if not prompt.endswith(" "):
-        prompt += " "
-    option = input(prompt).split(" ")
-
-    if option[0] in GLOBAL_OPTIONS:
-        GLOBAL_OPTIONS[option[0]](player, *option[1:])
+    inputs = prompt_player(prompt, player)
+    if inputs is None:
         return None
 
-    try:
-        return int(option[0])
-    except ValueError:
-        return " ".join(option)
+    strings = inputs.split(' ')
+    return strings[0], strings[1:]
 
 
-def parse_movement_instr(instr: str) -> Optional[compass.Direction]:
+def parse_movement_instr(
+        instr: str, dest: str
+) -> Optional[compass.Direction]:
     """
     Parses an instruction of the form 'go Direction' to extract the
     destination.
 
     Args:
         instr: The user's string input.
+        dest: The direction in which to move.
 
     Returns:
         The direction in which to travel.
 
     """
-    if instr.startswith('go '):
+    if instr == 'go':
         try:
-            return compass.Direction[instr[3:].capitalize()]
+            return compass.Direction[dest.capitalize()]
         except KeyError:
             # Continue to report invalid instruction
             pass

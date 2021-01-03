@@ -15,23 +15,23 @@ class ParseMovementTests(unittest.TestCase):
             with self.subTest(direction=direction):
                 d = Direction[direction.capitalize()]
                 self.assertEqual(
-                    parse_movement_instr(f'go {direction}'),
+                    parse_movement_instr('go', direction),
                     d
                 )
                 self.assertEqual(
-                    parse_movement_instr(f'go {direction.capitalize()}'),
+                    parse_movement_instr('go', direction.capitalize()),
                     d
                 )
                 self.assertEqual(
-                    parse_movement_instr(f'go {direction.upper()}'),
+                    parse_movement_instr('go', direction.upper()),
                     d
                 )
 
     def test_parse_no_go(self):
-        self.assertIsNone(parse_movement_instr('move north'))
+        self.assertIsNone(parse_movement_instr('move', 'north'))
 
     def test_parse_direction_typo(self):
-        self.assertIsNone(parse_movement_instr('go nrth'))
+        self.assertIsNone(parse_movement_instr('go', 'nrth'))
 
 
 class EquipTests(unittest.TestCase):

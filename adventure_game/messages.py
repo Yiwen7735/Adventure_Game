@@ -44,6 +44,11 @@ def print_enter(room: Room):
     print(f"You enter {room}.")
 
 
+def underline(s: str) -> str:
+    """Returns the underline-escaped version of the input string."""
+    return f'\033[4m{s}\033[0m'
+
+
 def print_options(options: Dict[str, ActionHandler]):
     """
     Prints the option descriptions, with the instruction keyword underlined
@@ -52,5 +57,5 @@ def print_options(options: Dict[str, ActionHandler]):
     """
     for option, (desc, _) in options.items():
         if option in desc or (option := option.capitalize()) in desc:
-            desc = desc.replace(option, f'\033[4m{option}\033[0m')
+            desc = desc.replace(option, underline(option))
         print(desc)

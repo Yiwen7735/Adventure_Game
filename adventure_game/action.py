@@ -5,7 +5,7 @@ from typing import List, TYPE_CHECKING
 from . import constants, item, messages
 from .chest import Chest
 from .enemy import Enemy
-from .utils import print_options, get_user_input
+from .utils import print_options, get_user_instr
 from .weapon import WeaponBrokenException
 if TYPE_CHECKING:
     from .player import Player
@@ -58,10 +58,10 @@ def attack(player: Player, enemy: Enemy):
             if not player.is_alive():
                 break
 
-        message = "Press 'a' to continue attacking or 'f' to flee"
+        message = "Press 'a' to continue attacking or 'f' to flee."
         if player.hp < 20:
             message = "Your hp is at a dangerous level. RUN AWAY??"
-        option = get_user_input(message, player)
+        option, _ = get_user_instr(message, player)
 
     if option == 'f':
         print(f"You fled from the {enemy.short_name}. Better luck next time!")
@@ -79,32 +79,36 @@ def take_loop(player: Player, items: List[item.Item]):
     """
     while len(items) > 0:
         print_options(items)
-        option = get_user_input(
-            "Press 'a' to take all or 'n' to take none", player
+        options = get_user_instr(
+            f"What would you like to {messages.underline('take')}?", player
         )
-        if option is None:
+        if options is None:
             continue
 
-        if option == 'a':
-            for treasure in items:
+        option, args = options
+        if option == 'take':
+            if args[0] == 'all':
+                for treasure in items:
+                    print(f"You picked up {treasure.name}!")
+                    player.pick_up_item(treasure)
+                items.clear()
+            elif args[0] == 'none':
+                break
+            else:
+                treasure = items[int(args[0]) - 1]
                 print(f"You picked up {treasure.name}!")
                 player.pick_up_item(treasure)
-            items.clear()
-        elif option == 'n':
-            break
-        else:
-            treasure = items[option - 1]
-            print(f"You picked up {treasure.name}!")
-            player.pick_up_item(treasure)
-            items.remove(treasure)
+                items.remove(treasure)
 
         if len(items) > 0:
             take_again = None
             while take_again is None:
-                take_again = get_user_input(
-                    "Continue to take?\n1. Yes \n2. No", player
+                take_again, _ = get_user_instr(
+                    f"Continue to take [{messages.underline('yes')}/"
+                    f"{messages.underline('no')}]?",
+                    player
                 )
-            if take_again == 2:
+            if take_again == 'no':
                 break
 
 
@@ -124,7 +128,7 @@ def collect(player: Player, chest: Chest):
         return
 
     print("Looks like you've found something...\n"
-          "Which one would you like to take?")
+          "What would you like to take?")
 
     take_loop(player, chest.contents)
 

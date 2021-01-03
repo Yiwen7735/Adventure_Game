@@ -107,7 +107,7 @@ class ChestCollectTests(unittest.TestCase):
         chest = Chest()
 
         def mock_input(*args):
-            return 'a'
+            return 'take all'
 
         with patch('builtins.input', mock_input):
             with patch('adventure_game.chest.random.randint', lambda a, b: 3):
@@ -125,7 +125,7 @@ class ChestCollectTests(unittest.TestCase):
         chest = Chest()
 
         def mock_input(*args):
-            return 'n'
+            return 'take none'
 
         with patch('builtins.input', mock_input):
             with patch('adventure_game.chest.random.randint', lambda a, b: 3):
@@ -142,7 +142,7 @@ class ChestCollectTests(unittest.TestCase):
         player = Player("Tester", 100, None, None)
         chest = Chest()
 
-        inputs = (i for i in ['1', '2'])
+        inputs = (i for i in ['take 1', 'no'])
 
         def mock_input(*args):
             return next(inputs)
@@ -163,10 +163,10 @@ class ChestCollectTests(unittest.TestCase):
         chest = Chest()
 
         inputs = (i for i in [
-            '1',  # Take the first item
-            '1',  # Continue taking items
-            '2',  # Take the second item
-            '2'   # Finish taking items
+            'take 1',  # Take the first item
+            'yes',     # Continue taking items
+            'take 2',  # Take the second item
+            'no'       # Finish taking items
         ])
 
         def mock_input(*args):

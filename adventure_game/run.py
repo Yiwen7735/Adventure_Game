@@ -23,7 +23,7 @@ def run_game():
             action_id = None
             while action_id is None:
                 messages.print_options(options)
-                action_id = utils.get_user_input(
+                action_id, _ = utils.get_user_instr(
                     "What would you like to do?",
                     player
                 )
@@ -37,13 +37,14 @@ def run_game():
                 "There are portals to the "
                 f"{messages.list_to_comma_string(exits)}."
             )
-            instr = utils.get_user_input(
+            instr = utils.get_user_instr(
                 "What would you like to do?",
                 player
             )
             if instr is None:
                 continue
-            dest = utils.parse_movement_instr(instr)
+            instr, args = instr
+            dest = utils.parse_movement_instr(instr, args[0])
             if dest is not None:
                 try:
                     player.go(dest)
