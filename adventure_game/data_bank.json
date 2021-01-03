@@ -191,8 +191,8 @@
       },
       "defence": {
         "Crappy": 0,
-        "Common": 0,
-        "Super": 0
+        "Common": 1,
+        "Super": 2
       }
     },
     {
@@ -204,8 +204,8 @@
       },
       "defence": {
         "Crappy": 0,
-        "Common": 0,
-        "Super": 0
+        "Common": 1,
+        "Super": 2
       }
     },
     {
@@ -216,9 +216,9 @@
         "Super": 5
       },
       "defence": {
-        "Crappy": 0,
-        "Common": 0,
-        "Super": 0
+        "Crappy": 1,
+        "Common": 2,
+        "Super": 4
       }
     },
     {
@@ -230,8 +230,8 @@
       },
       "defence": {
         "Crappy": 0,
-        "Common": 0,
-        "Super": 0
+        "Common": 1,
+        "Super": 2
       }
     },
     {
@@ -243,8 +243,8 @@
       },
       "defence": {
         "Crappy": 0,
-        "Common": 0,
-        "Super": 0
+        "Common": 1,
+        "Super": 3
       }
     },
     {
@@ -256,8 +256,8 @@
       },
       "defence": {
         "Crappy": 0,
-        "Common": 0,
-        "Super": 0
+        "Common": 1,
+        "Super": 2
       }
     },
     {
@@ -281,9 +281,9 @@
         "Super": 2
       },
       "defence": {
-        "Crappy": 0,
-        "Common": 0,
-        "Super": 0
+        "Crappy": 5,
+        "Common": 10,
+        "Super": 15
       }
     },
     {
