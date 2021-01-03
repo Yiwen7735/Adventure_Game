@@ -3,7 +3,7 @@ import json
 import random
 from typing import TYPE_CHECKING
 
-from . import constants
+from . import constants, item
 from .character import Character
 from .weapon import Weapon, generate_weapon
 if TYPE_CHECKING:
@@ -44,7 +44,17 @@ def generate_enemy() -> Enemy:
 
     """
     presets = random.choice(ENEMY_BANK)
-    weapon = generate_weapon()
+    if 'weapon' in presets:
+        weapon_presets = presets['weapon']
+        weapon = Weapon(
+            weapon_presets['name'],
+            0,
+            item.Rarity.Common,
+            weapon_presets['damage'],
+            100
+        )
+    else:
+        weapon = generate_weapon()
     return Enemy(
         presets['name'],
         presets.get('short_name', presets['name']),

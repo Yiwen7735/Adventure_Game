@@ -21,47 +21,83 @@
     {
       "name": "cowering troll",
       "short_name": "troll",
-      "hp": 10
+      "hp": 10,
+      "weapon": {
+        "name": "club",
+        "damage": 4
+      }
     },
     {
       "name": "towering ogre",
       "short_name": "ogre",
-      "hp": 25
+      "hp": 25,
+      "weapon": {
+        "name": "club",
+        "damage": 8
+      }
     },
     {
       "name": "interrupted engineer",
       "short_name": "engineer",
-      "hp": 15
+      "hp": 15,
+      "weapon": {
+        "name": "wrench",
+        "damage": 4
+      }
     },
     {
       "name": "cute baby dragon",
       "short_name": "baby dragon",
-      "hp": 20
+      "hp": 20,
+      "weapon": {
+        "name": "fire breath",
+        "damage": 12
+      }
     },
     {
       "name": "destructive dragon",
       "short_name": "dragon",
-      "hp": 100
+      "hp": 100,
+      "weapon": {
+        "name": "fire breath",
+        "damage": 25
+      }
     },
     {
       "name": "frustrated ballerina",
       "short_name": "ballerina",
-      "hp": 40
+      "hp": 40,
+      "weapon": {
+        "name": "stiletto heel",
+        "damage": 8
+      }
     },
     {
       "name": "floundering shark",
       "short_name": "shark",
-      "hp": 30
+      "hp": 30,
+      "weapon": {
+        "name": "sharp teeth",
+        "damage": 10
+      }
     },
     {
       "name": "flustered product manager",
       "short_name": "product manager",
-      "hp": 50
+      "hp": 50,
+      "weapon": {
+        "name": "keyboard and mouse",
+        "damage": 3
+      }
     },
     {
       "name": "morally-bankrupt politician",
       "short_name": "politician",
-      "hp": 35
+      "hp": 35,
+      "weapon": {
+        "name": "car",
+        "damage": 10
+      }
     },
     {
       "name": "blindfolded prisoner",
@@ -71,22 +107,38 @@
     {
       "name": "monkey with the scent of banana on her breath",
       "short_name": "monkey",
-      "hp": 45
+      "hp": 45,
+      "weapon": {
+        "name": "banana",
+        "damage": 5
+      }
     },
     {
       "name": "stern-looking teacher",
       "short_name": "teacher",
-      "hp": 30
+      "hp": 30,
+      "weapon": {
+        "name": "pointing-stick",
+        "damage": 6
+      }
     },
     {
       "name": "boozy clown",
       "short_name": "clown",
-      "hp": 20
+      "hp": 20,
+      "weapon": {
+        "name": "water pistol",
+        "damage": 1
+      }
     },
     {
       "name": "sleeping totoro",
       "short_name": "totoro",
-      "hp": 100
+      "hp": 100,
+      "weapon": {
+        "name": "sneeze",
+        "damage": 50
+      }
     }
   ],
   "weapon_types": [

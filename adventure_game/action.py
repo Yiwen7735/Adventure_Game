@@ -52,6 +52,10 @@ def attack(player: Player, enemy: Enemy):
                 break
 
             enemy.attack(player)
+            print(
+                f"The {enemy.short_name} attacked you with its "
+                f"{enemy.weapon.name}"
+            )
 
             print(
                 f"hp stats: {player.name} {player.hp}, "
