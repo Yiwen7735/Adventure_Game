@@ -203,7 +203,7 @@ def trigger_trap(player: Player, trap: Trap):
     threshold = random.randint(0, constants.MAX_LUCK)
     if player.get_luck() >= threshold:
         # Safe!
-        print("Phew...trap wasn't triggered")
+        print(f"Phew...the {trap.name} wasn't triggered!")
     else:
         # Trap is triggered
         print(f"Oops...{trap.description}. You lost {trap.damage} hp.")
