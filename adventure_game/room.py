@@ -322,7 +322,7 @@ class TreasureRoom(Room):
             desc += 'An open, empty'
         else:
             desc += 'An enticing'
-        desc += ' sits in the centre'
+        desc += ' chest sits in the centre'
         return desc
 
     @staticmethod
