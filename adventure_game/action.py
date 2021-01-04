@@ -1,6 +1,7 @@
 from __future__ import annotations
 import random
 from typing import List, TYPE_CHECKING
+import time
 
 from . import constants, item, messages
 from .chest import Chest
@@ -207,7 +208,9 @@ def trigger_trap(player: Player, trap: Trap) -> bool:
         return False
     else:
         # Trap is triggered
-        print(f"Oops...{trap.description}. You lost {trap.damage} hp.")
+        print("Oops...")
+        time.sleep(2)
+        print(f"{trap.description}. You lost {trap.damage} hp.")
         player.take_damage(trap.damage)
         player.move_to_new_room()
         trap.triggered = True
