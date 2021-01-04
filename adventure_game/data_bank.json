@@ -130,15 +130,6 @@
         "name": "water pistol",
         "damage": 1
       }
-    },
-    {
-      "name": "sleeping totoro",
-      "short_name": "totoro",
-      "hp": 100,
-      "weapon": {
-        "name": "sneeze",
-        "damage": 50
-      }
     }
   ],
   "weapon_types": [
@@ -411,9 +402,14 @@
       "damage": 3
     },
     {
-      "name": "maze",
-      "description": "you were stuck in a maze",
+      "name": "sleeping totoro",
+      "description": "you woke up the totoro and she made a big sneeze that blew you away",
       "damage": 10
+    },
+    {
+      "name": "mine",
+      "description": "you stepped on the mine and got blasted into the ceiling",
+      "damage": 60
     }
   ]
 }
