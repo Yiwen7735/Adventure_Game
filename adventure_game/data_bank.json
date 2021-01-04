@@ -347,7 +347,7 @@
     {
       "name": "small apple",
       "hp": 5,
-      "msg": "hmm...crunchy"
+      "msg": "Hmm...crunchy"
     },
     {
       "name": "fuji apple",
@@ -357,7 +357,7 @@
     {
       "name": "mouldy pizza",
       "hp": -10,
-      "msg": "well...guess that wasn't pepperoni"
+      "msg": "Well...guess that wasn't pepperoni"
     },
     {
       "name": "spicy mapo doufu",
@@ -372,17 +372,17 @@
     {
       "name": "chocolate bar",
       "hp": 5,
-      "msg": "be careful, it could make you fat.."
+      "msg": "Be careful, it could make you fat.."
     },
     {
       "name": "chili chips",
       "hp": 10,
-      "msg": "enjoy your favourite flavour~"
+      "msg": "Enjoy your favourite flavour~"
     },
     {
       "name": "peanuts",
       "hp": 5,
-      "msg": "gotta say...they are better in mala tang"
+      "msg": "Gotta say...they are better in mala tang"
     },
     {
       "name": "suspicious mushroom",
@@ -397,7 +397,7 @@
     {
       "name": "dry hot pot",
       "hp": -15,
-      "msg": "you can feel the diarrhea is coming.."
+      "msg": "You can feel the diarrhea is coming.."
     }
   ],
   "trap": [
