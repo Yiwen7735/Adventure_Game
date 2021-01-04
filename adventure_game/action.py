@@ -187,7 +187,7 @@ def attempt_sneak(player: Player, enemy: Enemy):
         print(f"You managed to slide past the {enemy.short_name} undetected!")
     else:
         # Failure...
-        print("Oops... that didn't go to plan.")
+        print(f"Oops... the {enemy.short_name} spotted you and you were forced to fight back.")
         attack(player, enemy)
 
 
