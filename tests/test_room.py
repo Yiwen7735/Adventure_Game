@@ -4,11 +4,11 @@ import unittest
 from unittest.mock import patch
 
 from adventure_game.compass import Direction, DIRECTIONS
+from adventure_game.exceptions import NoSuchExitException
 from adventure_game.player import Player
 from adventure_game.room import (
     EmptyRoom,
     MonsterRoom,
-    NoSuchExitException,
     Room,
     TreasureRoom,
     generate_first_room,

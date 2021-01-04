@@ -12,6 +12,7 @@ from typing import Dict, List, Optional
 from . import action, compass, constants, item, enemy, messages
 from .action_handler import ActionHandler
 from .chest import Chest
+from .exceptions import NoSuchExitException
 from .trap import Trap, generate_trap
 from .weapon import generate_weapon
 
@@ -19,15 +20,6 @@ from .weapon import generate_weapon
 # These descriptions are used when dynamically generating new rooms
 with open(constants.DATA_BANK_FILE) as fh:
     DESCRIPTION_BANK = json.load(fh)['room_descriptions']
-
-
-class NoSuchExitException(Exception):
-    """
-    A basic exception type to be raised if the caller tries to travel in
-    a direction which does not have a room.
-
-    """
-    pass
 
 
 class Room(abc.ABC):
@@ -200,6 +192,8 @@ class EmptyRoom(Room):
         desc = self.description
         if self.items:
             desc += f". There is something lying on the floor"
+        if self.trap:
+            desc += f"\nWatch out, there seems to be a {self.trap.name}...try to sneak past"
         return desc
 
     @staticmethod

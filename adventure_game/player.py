@@ -3,11 +3,11 @@ from typing import cast, Dict, List, Optional
 from . import constants
 from .character import Character
 from .compass import Direction
-from .exceptions import InventoryFullException
+from .exceptions import InventoryFullException, WeaponBrokenException
 from .item import EquipmentItem, FoodItem, Item
 from .outfit import Outfit
-from .room import Room
-from .weapon import Weapon, WeaponBrokenException
+from .room import Room, generate_first_room
+from .weapon import Weapon
 
 
 class Player(Character):
@@ -65,6 +65,10 @@ class Player(Character):
         return f"{self.name}: hp {self.hp}, " \
                f"holding {'Nothing' if weapon is None else weapon}, " \
                f"wearing {'Nothing' if outfit is None else outfit}"
+
+    def move_to_new_room(self):
+        new_room = generate_first_room()
+        self.move_to(new_room)
 
     def move_to(self, room: Room):
         """

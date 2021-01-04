@@ -3,14 +3,14 @@ import unittest
 from adventure_game.constants import MAX_LUCK
 from adventure_game.compass import Direction
 from adventure_game.enemy import Enemy
-from adventure_game.exceptions import InventoryFullException
+from adventure_game.exceptions import InventoryFullException, NoSuchExitException, WeaponBrokenException
 from adventure_game.item import Rarity
 from adventure_game.outfit import Outfit
 from adventure_game.player import Player
 from adventure_game.room import (
-    generate_first_room, EmptyRoom, NoSuchExitException
+    generate_first_room, EmptyRoom
 )
-from adventure_game.weapon import Weapon, generate_weapon, WeaponBrokenException
+from adventure_game.weapon import Weapon, generate_weapon
 
 
 class PlayerTests(unittest.TestCase):

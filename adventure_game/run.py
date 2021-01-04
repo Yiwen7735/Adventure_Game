@@ -1,8 +1,8 @@
 import sys
 
 from . import action, messages, utils
+from .exceptions import NoSuchExitException
 from .player import Player
-from .room import generate_first_room, NoSuchExitException
 
 
 def game_over():
@@ -15,7 +15,7 @@ def run_game():
     player = Player(name, 100)
 
     # Move the player to the starting room
-    player.move_to(generate_first_room())
+    player.move_to_new_room()
 
     while player.is_alive():
         messages.print_enter(player.current_room)

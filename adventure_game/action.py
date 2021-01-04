@@ -5,10 +5,9 @@ from typing import List, TYPE_CHECKING
 from . import constants, item, messages
 from .chest import Chest
 from .enemy import Enemy
-from .exceptions import InventoryFullException
+from .exceptions import InventoryFullException, WeaponBrokenException
 from .trap import Trap
 from .utils import print_options, get_user_instr
-from .weapon import WeaponBrokenException
 if TYPE_CHECKING:
     from .player import Player
 
@@ -208,4 +207,5 @@ def trigger_trap(player: Player, trap: Trap):
         # Trap is triggered
         print(f"Oops...{trap.description}. You lost {trap.damage} hp.")
         player.take_damage(trap.damage)
+        player.move_to_new_room()
         trap.triggered = True

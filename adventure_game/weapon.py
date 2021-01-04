@@ -4,10 +4,6 @@ import random
 from . import constants, item
 
 
-class WeaponBrokenException(Exception):
-    pass
-
-
 class Weapon(item.EquipmentItem):
     def __init__(
             self,
