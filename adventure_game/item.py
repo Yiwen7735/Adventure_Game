@@ -51,7 +51,7 @@ class FoodItem(Item):
         self.consume_msg = msg
 
     def __str__(self):
-        return f'{self.name} [restores {self.restore_amount} hp]'
+        return f'{self.name}'
 
 
 with open(constants.DATA_BANK_FILE) as fh:

@@ -357,17 +357,17 @@
     {
       "name": "mouldy pizza",
       "hp": -10,
-      "msg": "guess that wasn't pepperoni"
+      "msg": "well...guess that wasn't pepperoni"
     },
     {
       "name": "spicy mapo doufu",
       "hp": 15,
-      "msg": "[*spicy coughing*].."
+      "msg": "[*spicy coughing*]"
     },
     {
       "name": "filling mala tang",
       "hp": 25,
-      "msg": "[*burping*].."
+      "msg": "[*burping*]"
     },
     {
       "name": "chocolate bar",
@@ -386,12 +386,17 @@
     },
     {
       "name": "suspicious mushroom",
+      "hp": 100,
+      "msg": "Wow, the mushroom is panacea"
+    },
+    {
+      "name": "suspicious mushroom",
       "hp": -100,
       "msg": "Oops, the mushroom is poisonous.."
     },
     {
       "name": "dry hot pot",
-      "hp": -30,
+      "hp": -15,
       "msg": "you can feel the diarrhea is coming.."
     }
   ],
