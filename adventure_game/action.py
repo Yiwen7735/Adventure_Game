@@ -66,7 +66,9 @@ def attack(player: Player, enemy: Enemy):
         message = "Press 'a' to continue attacking or 'f' to flee."
         if player.hp < 20:
             message = "Your hp is at a dangerous level. RUN AWAY??"
-        option, _ = get_user_instr(message, player)
+        while (inputs := get_user_instr(message, player)) is None:
+            continue
+        option, _ = inputs
 
     if option == 'f':
         print(f"You fled from the {enemy.short_name}. Better luck next time!")

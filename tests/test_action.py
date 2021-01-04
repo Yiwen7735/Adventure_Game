@@ -76,17 +76,20 @@ class FightLoopTests(unittest.TestCase):
         monster = player.current_room.monster
         initial_hp = monster.hp
 
-        inputs = (i for i in ["a", "i", "a", "f"])
+        inputs = (i for i in ["a", "items", "a", "f"])
 
         def mock_input(*args):
             return next(inputs)
 
-        with patch('builtins.input', mock_input):
+        f = io.StringIO()
+        with patch('builtins.input', mock_input), contextlib.redirect_stdout(f):
             action.attack(player, monster)
 
         # Account for three attacks: one initial, two explicit in the mocked
         # inputs
         self.assertEqual(monster.hp, initial_hp - 3)
+        # Check that the inventory was printed
+        self.assertIn("Your weapons", f.getvalue())
 
 
 class ChestCollectTests(unittest.TestCase):
