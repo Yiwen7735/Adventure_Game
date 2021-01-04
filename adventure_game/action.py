@@ -126,14 +126,13 @@ def take_loop(player: Player, items: List[item.Item]):
                     items.remove(treasure)
 
         if len(items) > 0:
-            take_again = None
-            while take_again is None:
-                take_again, _ = get_user_instr(
-                    f"Continue to take [{messages.underline('yes')}/"
-                    f"{messages.underline('no')}]?",
-                    player
-                )
-            if take_again == 'no':
+            message = (
+                f"Continue to take [{messages.underline('yes')}/"
+                f"{messages.underline('no')}]?"
+            )
+            while (inputs := get_user_instr(message, player)) is None:
+                continue
+            if inputs[0] == 'no':
                 break
 
 
