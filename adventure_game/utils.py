@@ -66,14 +66,17 @@ def throw(player: Player, *args):
 
 
 def parse_item_spec(*args) -> Tuple:
-    spec_dict = {"w": "weapon", "o": "outfit"}
+    spec_dict = {"w": "weapon", "o": "outfit", "f": "food"}
     try:
         key = spec_dict[args[0][0]]
     except IndexError:
         print("command must be followed by item specification")
         return ()
     except KeyError:
-        print("item specification must start with w/o")
+        print(
+            "item specification must start with one of "
+            f"{'/'.join(spec_dict.keys())}"
+        )
         return ()
     try:
         value = int(args[0][1])
@@ -88,6 +91,9 @@ def equip(player: Player, *args):
     if not item:
         return
     ikey, ival = item
+    if ikey == "food":
+        print("Can't equip food! Maybe you wanted to eat it?")
+        return
     if ival <= len(player.inventory[ikey]):
         print(f"You equipped the {player.inventory[ikey][ival - 1].name}")
         player.equip(ikey, ival)
