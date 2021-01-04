@@ -190,7 +190,7 @@ def attempt_sneak(player: Player, enemy: Enemy):
         attack(player, enemy)
 
 
-def trigger_trap(player: Player, trap: Trap):
+def trigger_trap(player: Player, trap: Trap) -> bool:
     """
     The player triggers the trap in room
 
@@ -199,14 +199,16 @@ def trigger_trap(player: Player, trap: Trap):
 
     """
     if trap.triggered:
-        return
+        return False
     threshold = random.randint(0, constants.MAX_LUCK)
     if player.get_luck() >= threshold:
         # Safe!
         print(f"Phew...the {trap.name} wasn't triggered!")
+        return False
     else:
         # Trap is triggered
         print(f"Oops...{trap.description}. You lost {trap.damage} hp.")
         player.take_damage(trap.damage)
         player.move_to_new_room()
         trap.triggered = True
+        return True
